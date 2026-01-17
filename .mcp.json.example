@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "wix": {
+      "command": "npx",
+      "args": ["-y", "@wix/mcp-remote@latest", "https://mcp.wix.com/mcp"]
+    },
+    "discord-events": {
+      "command": "node",
+      "args": ["discord-events-mcp-server/dist/index.js"],
+      "env": {
+        "DISCORD_BOT_TOKEN": "",
+        "DISCORD_GUILD_ID": ""
+      }
+    }
+  }
+}
