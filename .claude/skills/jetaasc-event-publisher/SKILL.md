@@ -20,6 +20,11 @@ Gather from user:
 - **RSVP Link**: Google Form link (optional)
 - **Flyer/Image**: Event artwork URL or file
 
+**Handling Google Drive URLs:** If the user provides a Google Drive share link (e.g., `https://drive.google.com/file/d/FILE_ID/view`), convert it to a direct download URL for platforms that need to download the image (Wix, Discord):
+```
+https://drive.google.com/uc?export=download&id=FILE_ID
+```
+
 ### 2. Confirm Details and Select Platforms
 
 Display a summary of the event details for user confirmation.
