@@ -19,6 +19,14 @@
         "GOOGLE_SERVICE_ACCOUNT_KEY_PATH": "",
         "GOOGLE_CALENDAR_ID": ""
       }
+    },
+    "google-forms": {
+      "command": "node",
+      "args": ["google-forms-mcp-server/dist/index.js"],
+      "env": {
+        "GOOGLE_SERVICE_ACCOUNT_KEY_PATH": "",
+        "GOOGLE_FORMS_TEMPLATE_ID": ""
+      }
     }
   }
 }
