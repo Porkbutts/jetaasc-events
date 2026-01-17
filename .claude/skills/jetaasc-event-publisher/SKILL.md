@@ -20,7 +20,31 @@ Gather from user:
 - **RSVP Link**: Google Form link (optional)
 - **Flyer/Image**: Event artwork URL or file
 
-### 2. Publish to Wix Blog
+### 2. Confirm Details and Select Platforms
+
+Display a summary of the event details for user confirmation.
+
+Then ask two questions using `AskUserQuestion`:
+
+**Question 1 (multiSelect: true):** "Which platforms do you want to publish to?"
+- Wix Blog
+- Discord
+- Google Calendar
+- Facebook
+
+**Question 2:** "How should I publish to the selected platforms?"
+- In parallel (Recommended) - Publish to all platforms simultaneously
+- Sequential - Publish one at a time, confirming each before proceeding
+
+### 3. Publish to Selected Platforms
+
+Execute publishing based on user selections. If parallel, launch all platform tasks simultaneously. If sequential, complete each platform before moving to the next.
+
+---
+
+## Platform Details
+
+### Wix Blog
 
 Use Wix MCP tools. See [references/platforms.md](references/platforms.md) for site ID, API endpoints, category/tag IDs. See [references/wix-blog-format.md](references/wix-blog-format.md) for Ricos JSON structure.
 
@@ -33,19 +57,17 @@ Steps:
 6. On approval, publish draft
 7. Return published post URL
 
-### 3. Publish to Google Calendar
+### Google Calendar
 
 Add event to JETAASC Public Calendar. See [references/platforms.md](references/platforms.md) for API details.
 
 Required: Google Calendar API credentials configured.
 
-### 4. Publish to Discord
+### Discord
 
-Create Discord scheduled event. See [references/platforms.md](references/platforms.md) for API details.
+Create Discord scheduled event using `discord_create_event` MCP tool. See [references/platforms.md](references/platforms.md) for parameters.
 
-Required: Discord bot with Manage Events permission.
-
-### 5. Facebook (Manual)
+### Facebook (Manual)
 
 Provide formatted content for manual posting. See [references/platforms.md](references/platforms.md) for format.
 
@@ -53,7 +75,7 @@ Provide formatted content for manual posting. See [references/platforms.md](refe
 
 | Platform | Method | Status |
 |----------|--------|--------|
-| Wix Blog | API (Wix MCP) | Ready |
+| Wix Blog | Wix MCP | Ready |
 | Google Calendar | API | Requires setup |
-| Discord | API | Requires setup |
+| Discord | Discord MCP | Ready |
 | Facebook | Manual | Copy/paste |

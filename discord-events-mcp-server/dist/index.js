@@ -7,6 +7,8 @@
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { readFile } from "node:fs/promises";
+import { extname } from "node:path";
 import { z } from "zod";
 // Constants
 const DISCORD_API_BASE = "https://discord.com/api/v10";
@@ -67,6 +69,25 @@ async function discordRequest(endpoint, method = "GET", body) {
         return {};
     }
     return response.json();
+}
+// MIME type mapping for images
+const MIME_TYPES = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".webp": "image/webp",
+};
+// Convert image file to data URI
+async function imageToDataUri(filePath) {
+    const ext = extname(filePath).toLowerCase();
+    const mimeType = MIME_TYPES[ext];
+    if (!mimeType) {
+        throw new Error(`Unsupported image format: ${ext}. Supported formats: ${Object.keys(MIME_TYPES).join(", ")}`);
+    }
+    const buffer = await readFile(filePath);
+    const base64 = buffer.toString("base64");
+    return `data:${mimeType};base64,${base64}`;
 }
 // Format event for display
 function formatEvent(event) {
@@ -132,10 +153,10 @@ const CreateEventSchema = z
         .string()
         .optional()
         .describe("Channel ID for STAGE_INSTANCE or VOICE events"),
-    image: z
+    image_path: z
         .string()
         .optional()
-        .describe("Base64-encoded image data URI for event cover image"),
+        .describe("File path to cover image (PNG, JPG, GIF, or WebP). Server will read and encode it."),
 })
     .strict();
 const ListEventsSchema = z
@@ -198,10 +219,10 @@ const UpdateEventSchema = z
         .enum(["SCHEDULED", "ACTIVE", "COMPLETED", "CANCELED"])
         .optional()
         .describe("New status. Use to start (ACTIVE) or cancel (CANCELED) events"),
-    image: z
+    image_path: z
         .string()
         .optional()
-        .describe("New base64-encoded image data URI"),
+        .describe("File path to new cover image (PNG, JPG, GIF, or WebP). Server will read and encode it."),
 })
     .strict();
 const DeleteEventSchema = z
@@ -226,6 +247,10 @@ For EXTERNAL events (in-person meetups, online events outside Discord):
 For VOICE/STAGE events:
 - Set entity_type to "VOICE" or "STAGE_INSTANCE"
 - Provide the channel_id
+
+For cover images:
+- Provide image_path with a local file path (PNG, JPG, GIF, or WebP)
+- The server will read and encode the image automatically
 
 Returns the created event details including its ID.`,
     inputSchema: CreateEventSchema,
@@ -300,8 +325,20 @@ Returns the created event details including its ID.`,
         }
         body.channel_id = params.channel_id;
     }
-    if (params.image) {
-        body.image = params.image;
+    if (params.image_path) {
+        try {
+            body.image = await imageToDataUri(params.image_path);
+        }
+        catch (error) {
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: `Error reading image: ${error instanceof Error ? error.message : String(error)}`,
+                    },
+                ],
+            };
+        }
     }
     try {
         const event = await discordRequest(`/guilds/${guildId}/scheduled-events`, "POST", body);
@@ -439,10 +476,11 @@ server.registerTool("discord_update_event", {
     title: "Update Discord Event",
     description: `Update an existing scheduled event.
 
-Can modify: name, description, start/end times, location, status.
+Can modify: name, description, start/end times, location, status, cover image.
 
 To start an event: set status to "ACTIVE"
 To cancel an event: set status to "CANCELED"
+To update cover image: provide image_path with a local file path
 
 Only provide the fields you want to change.`,
     inputSchema: UpdateEventSchema,
@@ -475,8 +513,21 @@ Only provide the fields you want to change.`,
         body.scheduled_end_time = params.scheduled_end_time;
     if (params.location)
         body.entity_metadata = { location: params.location };
-    if (params.image)
-        body.image = params.image;
+    if (params.image_path) {
+        try {
+            body.image = await imageToDataUri(params.image_path);
+        }
+        catch (error) {
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: `Error reading image: ${error instanceof Error ? error.message : String(error)}`,
+                    },
+                ],
+            };
+        }
+    }
     if (params.status) {
         const statusMap = {
             SCHEDULED: EventStatus.SCHEDULED,

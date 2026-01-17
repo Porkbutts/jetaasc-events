@@ -117,35 +117,42 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/events
 ### Server
 JETAASC Discord Server
 
-### API Setup Required
-1. Create a Discord application at https://discord.com/developers/applications
-2. Create a bot and get the bot token
-3. Enable "Manage Events" permission
-4. Invite bot to JETAASC server with events scope
+### MCP Tool
+Use `discord_create_event` from the Discord Events MCP server.
 
-### API Endpoint
-```
-POST https://discord.com/api/v10/guilds/{guild_id}/scheduled-events
-```
+### Handling Flyer URLs
+If the flyer is provided as a URL (e.g., Google Drive, Dropbox, direct image link), download it to a temp file first:
 
-### Scheduled Event Object Structure
-```json
-{
-  "name": "Event Title",
-  "description": "Event details",
-  "scheduled_start_time": "2026-02-15T18:00:00-08:00",
-  "scheduled_end_time": "2026-02-15T21:00:00-08:00",
-  "privacy_level": 2,
-  "entity_type": 3,
-  "entity_metadata": {
-    "location": "Venue Address"
-  }
-}
+```bash
+# For direct image URLs:
+curl -L -o /tmp/event-flyer.png "https://example.com/image.png"
 ```
 
-### Entity Types
-- `2` = VOICE (voice channel event)
-- `3` = EXTERNAL (external location event)
+Then pass the local path to `image_path`.
+
+### Required Parameters
+| Parameter | Description |
+|-----------|-------------|
+| `name` | Event title |
+| `description` | Event details (include cost and RSVP link) |
+| `scheduled_start_time` | ISO8601 timestamp (e.g., `2026-02-15T18:00:00-08:00`) |
+| `scheduled_end_time` | ISO8601 timestamp (required for external events) |
+| `entity_type` | `EXTERNAL` for in-person events, `VOICE` for voice channel events |
+| `location` | Venue address (required for EXTERNAL events) |
+| `image_path` | (Optional) Local file path to cover image (PNG, JPG, GIF, WebP) |
+
+### Example
+```
+discord_create_event(
+  name: "JETAASC Boba Banter",
+  description: "Join us for boba!\n\nCost: Free\nRSVP: https://forms.gle/...",
+  scheduled_start_time: "2026-02-22T15:00:00-08:00",
+  scheduled_end_time: "2026-02-22T17:00:00-08:00",
+  entity_type: "EXTERNAL",
+  location: "Half & Half Tea Express, Los Angeles",
+  image_path: "/path/to/event-flyer.png"
+)
+```
 
 ---
 
