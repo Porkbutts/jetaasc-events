@@ -51,7 +51,7 @@ An MCP server for managing Google Calendar events using service account authenti
 
 ### Mailchimp MCP Server
 
-Located in `mailchimp-mcp-server/`
+Located in `mcp-servers/mailchimp/`
 
 An MCP server for managing Mailchimp email campaigns.
 
@@ -143,7 +143,7 @@ An MCP server for managing Mailchimp email campaigns.
 
 4. Build the server:
    ```bash
-   cd mailchimp-mcp-server
+   cd mcp-servers/mailchimp
    npm install
    npm run build
    ```
@@ -154,7 +154,7 @@ An MCP server for managing Mailchimp email campaigns.
      "mcpServers": {
        "mailchimp": {
          "command": "node",
-         "args": ["mailchimp-mcp-server/dist/index.js"],
+         "args": ["mcp-servers/mailchimp/dist/index.js"],
          "env": {
            "MAILCHIMP_API_KEY": "your-api-key-us6"
          }

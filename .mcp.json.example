@@ -22,7 +22,7 @@
     },
     "mailchimp": {
       "command": "node",
-      "args": ["mailchimp-mcp-server/dist/index.js"],
+      "args": ["mcp-servers/mailchimp/dist/index.js"],
       "env": {
         "MAILCHIMP_API_KEY": ""
       }
