@@ -37,7 +37,7 @@ Or add to your Claude Code MCP config:
   "mcpServers": {
     "mailchimp": {
       "command": "node",
-      "args": ["/path/to/mcp-servers/mailchimp/dist/index.js"],
+      "args": ["/path/to/mcp-servers/mailchimp-mcp-server/dist/index.js"],
       "env": {
         "MAILCHIMP_API_KEY": "your-api-key-us6"
       }
