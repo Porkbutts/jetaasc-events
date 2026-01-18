@@ -97,7 +97,30 @@ When the user provides image URLs (flyers, photos, etc.):
    - No listings: "No current job listings, but check out the JETAA Job Board for potential leads!"
    - Has listings: [list jobs] + "As always, check out the JETAA Job Board for more opportunities!"
 
-### 4. Create Mailchimp Campaign
+### 4. Confirm Structure with User
+
+Before creating the campaign, summarize and confirm:
+
+```
+Here's the newsletter I'm about to create:
+
+**Campaign Details:**
+- Subject: [SUBJECT LINE]
+- Preview: [PREVIEW TEXT]
+- Greeting: [GREETING TEXT]
+
+**Sections:**
+- Announcements: [brief summary]
+- Spotlight: [included/not included - if included, who's featured]
+- Event Recaps: [included/not included - if included, which events]
+- Upcoming Events: [list event titles]
+- Job Opportunities: [listings or "JETAA Job Board link only"]
+- Get Involved: [standard content]
+
+Does this look right, or would you like any changes?
+```
+
+### 5. Create Mailchimp Campaign
 
 Use Mailchimp MCP tools:
 
@@ -113,7 +136,7 @@ Use Mailchimp MCP tools:
    - campaign_id: [from above]
    - html: [the built HTML]
 
-### 5. Confirm with User
+### 6. Offer Test Email
 
 ```
 Newsletter draft created!
