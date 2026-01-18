@@ -18,7 +18,7 @@ Create monthly newsletter campaigns for JETAASC using Mailchimp.
 | Spotlight | No | Feature a JET alum, community member, or achievement |
 | Event Recaps | No | Photos/highlights from recent events |
 | Upcoming Events | Yes | Events with: title, flyer image, description, date/time, location (optional: cost, RSVP link) |
-| Job Opportunities | No | Job listings relevant to JET alums |
+| Job Opportunities | Yes | Job listings relevant to JET alums + JETAA Job Board link (always included) |
 
 ## Workflow
 
@@ -36,7 +36,7 @@ I'll help create the JETAASC newsletter. I need content for:
 **Optional (skip if none this month):**
 - Spotlight (member name, JET placement, what they're doing now)
 - Event Recaps (event name, highlights, attendance)
-- Job Opportunities (title, company, requirements, how to apply)
+- Job Opportunities (title, company, requirements, how to apply) - section always included with JETAA Job Board link
 
 Also needed:
 - Subject line (e.g., "JETAASC February 2026 Newsletter")
@@ -93,7 +93,9 @@ When the user provides image URLs (flyers, photos, etc.):
   <a href="[RSVP_URL]" class="btn" style="color:#ffffff;">RSVP Here</a>
 </div>
 ```
-4. Remove optional sections if user has no content for them
+4. Remove optional sections (Spotlight, Event Recaps) if user has no content for them. Always keep Job Opportunities section with JETAA Job Board link:
+   - No listings: "No current job listings, but check out the JETAA Job Board for potential leads!"
+   - Has listings: [list jobs] + "As always, check out the JETAA Job Board for more opportunities!"
 
 ### 4. Create Mailchimp Campaign
 
