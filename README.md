@@ -81,7 +81,7 @@ An MCP server for managing Google Calendar events using service account authenti
 
 ### Mailchimp MCP Server
 
-Located in `mcp-servers/mailchimp/`
+Located in `mcp-servers/mailchimp-mcp-server/`
 
 An MCP server for managing Mailchimp email campaigns.
 
@@ -90,11 +90,21 @@ An MCP server for managing Mailchimp email campaigns.
 - `mailchimp_list_campaigns` - List existing campaigns
 - `mailchimp_get_campaign` - Get campaign details
 - `mailchimp_create_campaign` - Create a new campaign
+- `mailchimp_delete_campaign` - Delete a draft/paused campaign
+- `mailchimp_get_content` - Get campaign HTML content
 - `mailchimp_set_content` - Set HTML/template content for a campaign
 - `mailchimp_send_test` - Send a test email
 - `mailchimp_send_campaign` - Send campaign to full audience
+- `mailchimp_schedule_campaign` - Schedule campaign for future send
+- `mailchimp_unschedule_campaign` - Cancel scheduled send
 - `mailchimp_upload_image` - Upload image to File Manager
 - `mailchimp_list_files` - List files in File Manager
+- `mailchimp_list_templates` - List available templates
+- `mailchimp_get_template` - Get template details
+- `mailchimp_create_template` - Create template from HTML
+- `mailchimp_update_template` - Update existing template
+- `mailchimp_delete_template` - Delete a template
+- `mailchimp_get_template_default_content` - Get template's editable sections
 
 ## Setup
 
@@ -173,7 +183,7 @@ An MCP server for managing Mailchimp email campaigns.
 
 4. Build the server:
    ```bash
-   cd mcp-servers/mailchimp
+   cd mcp-servers/mailchimp-mcp-server
    npm install
    npm run build
    ```
@@ -184,7 +194,7 @@ An MCP server for managing Mailchimp email campaigns.
      "mcpServers": {
        "mailchimp": {
          "command": "node",
-         "args": ["mcp-servers/mailchimp/dist/index.js"],
+         "args": ["mcp-servers/mailchimp-mcp-server/dist/index.js"],
          "env": {
            "MAILCHIMP_API_KEY": "your-api-key-us6"
          }
