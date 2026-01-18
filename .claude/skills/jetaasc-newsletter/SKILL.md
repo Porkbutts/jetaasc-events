@@ -128,7 +128,7 @@ Would you like me to send a test email? Provide an email address.
 | Audience ID | `27201f5231` |
 | From Name | `JETAASC` |
 | Reply-to | `officers@jetaasc.org` |
-| Brand Color | `#2baadf` |
+| Brand Color | `#b22222` |
 | Header Image | `https://gallery.mailchimp.com/c83f204740850ff66ba2d6475/images/87754776-0575-45d3-b40d-e387de4dd6a5.jpg` |
 
 ## Resources
