@@ -4,11 +4,13 @@ Tools for publishing JETAASC (JET Alumni Association of Southern California) eve
 
 ## Components
 
-### Claude Code Skill
+### Claude Code Skills
+
+#### Event Publisher
 
 Located in `.claude/skills/jetaasc-event-publisher/`
 
-A Claude Code skill that automates event publishing workflow:
+Automates event publishing workflow:
 
 1. Collect event details (title, date, location, description, cost, RSVP link, flyer)
 2. Confirm details and select target platforms
@@ -22,6 +24,34 @@ A Claude Code skill that automates event publishing workflow:
 | Discord | Discord MCP | Ready |
 | Google Calendar | Google Calendar MCP | Ready |
 | Facebook | Manual | Copy/paste |
+
+**Trigger:** `/jetaasc-event-publisher` or ask to "publish an event"
+
+#### Newsletter
+
+Located in `.claude/skills/jetaasc-newsletter/`
+
+Creates monthly JETAASC newsletter campaigns in Mailchimp:
+
+1. Gather content for each section (announcements, events, spotlight, etc.)
+2. Process and upload images to Mailchimp
+3. Build HTML from template
+4. Create draft campaign and send test email
+
+**Trigger:** `/jetaasc-newsletter` or ask to "create a newsletter"
+
+#### Wix Blog Archiver
+
+Located in `.claude/skills/wix-blog-archiver/`
+
+Archives past JETAASC events by moving blog posts from "Upcoming" to "Past Events" category:
+
+1. List posts in "Upcoming" category
+2. Parse event dates from post content
+3. Preview which posts will be archived
+4. Move past events to "Past Events" category
+
+**Trigger:** `/wix-blog-archiver` or ask to "archive past events"
 
 ### Discord Events MCP Server
 
@@ -171,15 +201,17 @@ An MCP server for managing Mailchimp email campaigns.
 
 The skill uses the Wix MCP server. Follow Wix's setup instructions to configure it.
 
-### Using the Skill
+### Using the Skills
 
-Once MCP servers are configured, invoke the skill in Claude Code:
+Once MCP servers are configured, invoke skills in Claude Code:
 
 ```
-/jetaasc-event-publisher
+/jetaasc-event-publisher   # Publish events to multiple platforms
+/jetaasc-newsletter        # Create monthly newsletter campaigns
+/wix-blog-archiver         # Archive past events on Wix blog
 ```
 
-Or simply ask Claude to "publish an event" or "create an event post".
+Or simply describe what you want to do (e.g., "publish an event", "create a newsletter", "archive past events").
 
 ## License
 
