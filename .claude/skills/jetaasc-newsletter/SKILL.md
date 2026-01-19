@@ -17,7 +17,7 @@ Create monthly newsletter campaigns for JETAASC using Mailchimp.
 | Announcements | Yes | Org updates, volunteer calls, leadership news |
 | Spotlight | No | Feature a JET alum, community member, or achievement |
 | Event Recaps | No | Photos/highlights from recent events |
-| Upcoming Events | Yes | Events with: title, flyer image, description, date/time, location (optional: cost, RSVP link) |
+| Upcoming Events | Yes | Events with: title, flyer image, description, date, time, location (optional: cost, RSVP link) |
 | Job Opportunities | No | Job listings relevant to JET alums |
 
 ## Workflow
@@ -31,7 +31,7 @@ I'll help create the JETAASC newsletter. I need content for:
 
 **Required:**
 - Announcements (org updates, calls to action)
-- Upcoming Events (for each: title, date/time, location, description, flyer image URL; optional: cost, RSVP link)
+- Upcoming Events (for each: title, date, time, location, description, flyer image URL; optional: cost, RSVP link)
 
 **Optional (skip if none this month):**
 - Spotlight (member name, JET placement, what they're doing now)
@@ -84,7 +84,8 @@ When the user provides image URLs (flyers, photos, etc.):
   <div class="event-flyer"><img src="[FLYER_URL]" alt="[TITLE] Flyer"></div>
   <div class="event-description"><p>[DESCRIPTION]</p></div>
   <div class="event-details">
-    <p><strong>Date:</strong> [FULL DATE/TIME]</p>
+    <p><strong>Date:</strong> [DATE]</p>
+    <p><strong>Time:</strong> [START TIME] – [END TIME] PT</p>
     <p><strong>Location:</strong> [LOCATION]</p>
     <!-- Optional: include only if there's a cost -->
     <p><strong>Cost:</strong> [COST]</p>
