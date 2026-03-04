@@ -12,14 +12,6 @@
         "DISCORD_GUILD_ID": ""
       }
     },
-    "google-calendar": {
-      "command": "node",
-      "args": ["mcp-servers/google-calendar-mcp-server/dist/index.js"],
-      "env": {
-        "GOOGLE_SERVICE_ACCOUNT_KEY_PATH": "",
-        "GOOGLE_CALENDAR_ID": ""
-      }
-    },
     "mailchimp": {
       "command": "node",
       "args": ["mcp-servers/mailchimp-mcp-server/dist/index.js"],

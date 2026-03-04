@@ -22,7 +22,7 @@ Automates event publishing workflow:
 |----------|--------|--------|
 | Wix Blog | Wix MCP | Ready |
 | Discord | Discord MCP | Ready |
-| Google Calendar | Google Calendar MCP | Ready |
+| Google Calendar | GSuite MCP (`gcal_*`) | Ready |
 | Facebook | Manual | Copy/paste |
 
 **Trigger:** `/jetaasc-event-publisher` or ask to "publish an event"
@@ -65,19 +65,6 @@ An MCP server for managing Discord Guild Scheduled Events.
 - `discord_get_event` - Get details of a specific event
 - `discord_update_event` - Update an existing event
 - `discord_delete_event` - Delete an event
-
-### Google Calendar MCP Server
-
-Located in `mcp-servers/google-calendar-mcp-server/`
-
-An MCP server for managing Google Calendar events using service account authentication.
-
-**Tools provided:**
-- `gcal_create_event` - Create a new calendar event
-- `gcal_list_events` - List upcoming events
-- `gcal_get_event` - Get details of a specific event
-- `gcal_update_event` - Update an existing event
-- `gcal_delete_event` - Delete an event
 
 ### Mailchimp MCP Server
 
@@ -138,42 +125,9 @@ An MCP server for managing Mailchimp email campaigns.
    }
    ```
 
-### Google Calendar MCP Server
+### GSuite MCP (Google Calendar)
 
-1. Create a Google Cloud project at https://console.cloud.google.com
-2. Enable the Google Calendar API
-3. Create a Service Account (APIs & Services → Credentials → Create Credentials → Service Account)
-4. Create and download a JSON key for the service account
-5. Share your Google Calendar with the service account email (found in the JSON as `client_email`)
-   - Give it "Make changes to events" permission
-
-6. Build the server:
-   ```bash
-   cd mcp-servers/google-calendar-mcp-server
-   npm install
-   npm run build
-   ```
-
-7. Configure in `.mcp.json`:
-   ```json
-   {
-     "mcpServers": {
-       "google-calendar": {
-         "command": "node",
-         "args": ["/path/to/mcp-servers/google-calendar-mcp-server/dist/index.js"],
-         "env": {
-           "GOOGLE_SERVICE_ACCOUNT_KEY_PATH": "/path/to/service-account-key.json",
-           "GOOGLE_CALENDAR_ID": "your-calendar-id@group.calendar.google.com"
-         }
-       }
-     }
-   }
-   ```
-
-**Environment Variables:**
-- `GOOGLE_SERVICE_ACCOUNT_KEY_PATH` - Path to the service account JSON key file
-- `GOOGLE_SERVICE_ACCOUNT_KEY` - Alternative: JSON content directly (useful for CI/CD)
-- `GOOGLE_CALENDAR_ID` - Calendar ID to use (defaults to "primary")
+Google Calendar is accessed via the GSuite MCP server plugin, which provides `gcal_*` tools (`gcal_create_event`, `gcal_list_events`, etc.). Follow the GSuite MCP setup instructions to configure it.
 
 ### Mailchimp MCP Server
 

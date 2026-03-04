@@ -83,7 +83,7 @@ Use the returned `file.id` in the blog post.
 JETAASC Public Calendar
 
 ### MCP Tool
-Use `gcal_create_event` from the Google Calendar MCP server.
+Use `gcal_create_event` from the GSuite MCP server.
 
 ### Required Parameters
 | Parameter | Description |
