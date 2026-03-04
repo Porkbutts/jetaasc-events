@@ -192,6 +192,17 @@
 		.toc li{
 			margin:5px 0;
 		}
+		.toc ul ul{
+			margin-top:5px;
+			padding-left:20px;
+		}
+		.toc a{
+			color:#202020;
+			text-decoration:none;
+		}
+		.toc a:hover{
+			text-decoration:underline;
+		}
 	@media only screen and (max-width: 480px){
 		body,table,td,p,a,li,blockquote{
 			-webkit-text-size-adjust:none !important;
@@ -345,37 +356,37 @@
                                 <div class="toc" mc:edit="toc" style="background-color: #f0f9fc;padding: 15px;margin-bottom: 10px;">
                                     <strong>In This Issue:</strong>
                                     <ul style="margin: 0;padding-left: 20px;">
-                                        <li style="margin: 5px 0;">Announcements</li>
-                                        <li style="margin: 5px 0;">Spotlight <em>(optional)</em></li>
-                                        <li style="margin: 5px 0;">Event Recaps <em>(optional)</em></li>
-                                        <li style="margin: 5px 0;">Upcoming Events</li>
-                                        <li style="margin: 5px 0;">Job Opportunities</li>
-                                        <li style="margin: 5px 0;">Get Involved</li>
+                                        <li style="margin: 5px 0;"><a href="#announcements" style="color: #202020;text-decoration: none;">Announcements</a></li>
+                                        <li style="margin: 5px 0;"><a href="#spotlight" style="color: #202020;text-decoration: none;">Spotlight</a> <em>(optional)</em></li>
+                                        <li style="margin: 5px 0;"><a href="#event-recaps" style="color: #202020;text-decoration: none;">Event Recaps</a> <em>(optional)</em></li>
+                                        <li style="margin: 5px 0;"><a href="#upcoming-events" style="color: #202020;text-decoration: none;">Upcoming Events</a></li>
+                                        <li style="margin: 5px 0;"><a href="#job-opportunities" style="color: #202020;text-decoration: none;">Job Opportunities</a></li>
+                                        <li style="margin: 5px 0;"><a href="#get-involved" style="color: #202020;text-decoration: none;">Get Involved</a></li>
                                     </ul>
                                 </div>
                                 
                                 <!-- Announcements -->
-                                <div class="section" mc:edit="announcements" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
+                                <div class="section" id="announcements" mc:edit="announcements" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
                                     <div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Announcements</div>
                                     <p style="margin: 10px 0;padding: 0;">Your announcements content here. Include org updates, volunteer calls, leadership news, and special notices.</p>
                                 </div>
                                 
                                 <!-- Spotlight (Optional) -->
-                                <div class="section optional-section" mc:edit="spotlight" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
+                                <div class="section optional-section" id="spotlight" mc:edit="spotlight" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
                                     <div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Spotlight</div>
                                     <p style="margin: 10px 0;padding: 0;"><em>(Optional section - delete if not used this month)</em></p>
                                     <p style="margin: 10px 0;padding: 0;">Feature a JET alum, community member, or achievement here. Include a photo and brief profile.</p>
                                 </div>
                                 
                                 <!-- Event Recaps (Optional) -->
-                                <div class="section optional-section" mc:edit="event_recaps" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
+                                <div class="section optional-section" id="event-recaps" mc:edit="event_recaps" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
                                     <div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Event Recaps</div>
                                     <p style="margin: 10px 0;padding: 0;"><em>(Optional section - delete if not used this month)</em></p>
                                     <p style="margin: 10px 0;padding: 0;">Share photos and highlights from recent events. Thank volunteers and attendees!</p>
                                 </div>
                                 
                                 <!-- Upcoming Events -->
-                                <div class="section" mc:edit="upcoming_events" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
+                                <div class="section" id="upcoming-events" mc:edit="upcoming_events" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
                                     <div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Upcoming Events</div>
                                     
                                     <!-- Event 1 -->
@@ -422,13 +433,13 @@
                                 </div>
                                 
                                 <!-- Job Opportunities -->
-                                <div class="section" mc:edit="job_opportunities" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
+                                <div class="section" id="job-opportunities" mc:edit="job_opportunities" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;">
                                     <div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Job Opportunities</div>
                                     <p style="margin: 10px 0;padding: 0;">No current job listings, but check out the <a href="https://www.usjetaa.org/usjetaa-job-board" style="color: #007C89;text-decoration: underline;">JETAA Job Board</a> for potential leads!</p>
                                 </div>
                                 
                                 <!-- Get Involved -->
-                                <div class="section" mc:edit="get_involved" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;"><div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Get Involved</div>
+                                <div class="section" id="get-involved" mc:edit="get_involved" style="padding: 18px 0;border-bottom: 1px solid #EAEAEA;"><div class="section-title" style="color: #b22222;font-family: Helvetica, Arial, sans-serif;font-size: 20px;font-weight: bold;margin-bottom: 15px;padding-bottom: 5px;border-bottom: 2px solid #b22222;">Get Involved</div>
 
 <p style="margin: 10px 0;padding: 0;"><strong>Stay connected:</strong></p>
 

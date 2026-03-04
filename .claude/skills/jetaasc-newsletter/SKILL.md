@@ -14,9 +14,9 @@ Create monthly newsletter campaigns for JETAASC using Mailchimp.
 
 | Section | Required | Content |
 |---------|----------|---------|
-| Announcements | Yes | Org updates, volunteer calls, leadership news |
+| Announcements | No | Org updates, volunteer calls, leadership news |
+| Event Recap | No | Photos/highlights from recent events |
 | Spotlight | No | Feature a JET alum, community member, or achievement |
-| Event Recaps | No | Photos/highlights from recent events |
 | Upcoming Events | Yes | Events with: title, flyer image, description, date, time, location (optional: cost, RSVP link) |
 | Job Opportunities | Yes | Job listings relevant to JET alums + JETAA Job Board link (always included) |
 
@@ -30,122 +30,112 @@ Ask the user for content for each section:
 I'll help create the JETAASC newsletter. I need content for:
 
 **Required:**
-- Announcements (org updates, calls to action)
-- Upcoming Events (for each: title, date, time, location, description, flyer image URL; optional: cost, RSVP link)
+- Upcoming Events (for each: title, date, time, location, description, flyer image; optional: cost, RSVP link)
 
 **Optional (skip if none this month):**
+- Announcements (org updates, calls to action)
+- Event Recaps (event name, highlights, photos)
 - Spotlight (member name, JET placement, what they're doing now)
-- Event Recaps (event name, highlights, attendance)
-- Job Opportunities (title, company, requirements, how to apply) - section always included with JETAA Job Board link
+- Job Opportunities (title, company, requirements, how to apply)
 
 Also needed:
-- Subject line (e.g., "JETAASC February 2026 Newsletter")
+- Subject line (e.g., "JETAASC March 2026 Newsletter")
 - Preview text (short teaser, ~50 chars)
 ```
 
 ### 2. Process Images
 
-When the user provides image URLs (flyers, photos, etc.):
+When the user provides local image paths or URLs:
 
-1. **Download the image** using curl:
+1. **Check file size** - Mailchimp limit is 1MB
+2. **Compress if needed** (if >1MB) using sips or ImageMagick:
    ```bash
-   curl -L -o /tmp/event-flyer.png "https://example.com/flyer.png"
+   sips -Z 1200 /path/to/image.png --out /tmp/compressed.jpg -s format jpeg -s formatOptions 85
    ```
-
-2. **Check file size** - Mailchimp limit is 1MB:
-   ```bash
-   ls -la /tmp/event-flyer.png
+3. **Upload to Mailchimp** using MCP tool:
    ```
-
-3. **Compress if needed** (if >1MB) using ImageMagick:
-   ```bash
-   # Resize to max 1200px width and compress quality
-   convert /tmp/event-flyer.png -resize 1200x\> -quality 85 /tmp/event-flyer-compressed.jpg
+   mailchimp_upload_image(image_path="/tmp/compressed.jpg", name="descriptive-name.jpg")
    ```
+4. **Save the returned URL** for use in the structured content
 
-4. **Upload to Mailchimp** using MCP tool:
-   ```
-   mailchimp_upload_image(image_path="/tmp/event-flyer-compressed.jpg", name="event-name-flyer.jpg")
-   ```
+> **Note:** Always download and re-upload images rather than hotlinking external URLs.
 
-5. **Use returned URL** in the newsletter HTML content
+### 3. Draft Content in Markdown
 
-> **Note:** Always download and re-upload images rather than hotlinking external URLs. This ensures images remain available and load reliably for all recipients.
-
-### 3. Build HTML Content
-
-1. Read `assets/template.html`
-2. Replace placeholder content in each `mc:edit` section with user's content
-3. For upcoming events, use this structure per event:
-```html
-<div class="event-block">
-  <div class="event-date">[SHORT DATE]</div>
-  <div class="event-title">[TITLE]</div>
-  <div class="event-flyer"><img src="[FLYER_URL]" alt="[TITLE] Flyer"></div>
-  <div class="event-description"><p>[DESCRIPTION]</p></div>
-  <div class="event-details">
-    <p><strong>Date:</strong> [DATE]</p>
-    <p><strong>Time:</strong> [START TIME] – [END TIME] PT</p>
-    <p><strong>Location:</strong> [LOCATION]</p>
-    <!-- Optional: include only if there's a cost -->
-    <p><strong>Cost:</strong> [COST]</p>
-  </div>
-  <!-- Optional: include only if RSVP link provided -->
-  <a href="[RSVP_URL]" class="btn" style="color:#ffffff;">RSVP Here</a>
-</div>
-```
-4. Remove optional sections (Spotlight, Event Recaps) if user has no content for them. Always keep Job Opportunities section with JETAA Job Board link:
-   - No listings: "No current job listings, but check out the JETAA Job Board for potential leads!"
-   - Has listings: [list jobs] + "As always, check out the JETAA Job Board for more opportunities!"
-
-### 4. Confirm Structure with User
-
-Before creating the campaign, summarize and confirm:
+Before building, draft the full newsletter content in markdown and present it to the user for review. This includes the rewritten/polished text for every section — not just a summary of what's included. The user must approve the actual content before the HTML is built.
 
 ```
-Here's the newsletter I'm about to create:
+Here's the newsletter draft for your review:
 
 **Campaign Details:**
 - Subject: [SUBJECT LINE]
 - Preview: [PREVIEW TEXT]
-- Greeting: [GREETING TEXT]
 
-**Sections:**
-- Announcements: [brief summary]
-- Spotlight: [included/not included - if included, who's featured]
-- Event Recaps: [included/not included - if included, which events]
-- Upcoming Events: [list event titles]
-- Job Opportunities: [listings or "JETAA Job Board link only"]
-- Get Involved: [standard content]
+---
+
+[Full markdown content for each section: announcements, event recaps, events, jobs, etc.]
+
+---
 
 Does this look right, or would you like any changes?
 ```
 
-### 5. Create Mailchimp Campaign
+Only proceed to the build step after the user approves.
 
-Use Mailchimp MCP tools:
+### 4. Build and Publish via Subagent
 
-1. `mailchimp_create_campaign`:
-   - list_id: `27201f5231`
-   - subject_line: [from user]
-   - preview_text: [from user]
-   - from_name: `JETAASC`
-   - reply_to: `officers@jetaasc.org`
-   - title: `[Month Year] Newsletter`
+Launch the `newsletter-builder` agent (subagent_type: "general-purpose") with structured content.
 
-2. `mailchimp_set_content`:
-   - campaign_id: [from above]
-   - html: [the built HTML]
+**For a new campaign:**
+```
+Create the Mailchimp campaign with these details:
 
-### 6. Offer Test Email
+Subject: [subject line]
+Preview: [preview text]
+Title: [Month Year] Newsletter
+Greeting: [greeting text]
+
+TOC (use nested bullets for sub-items like individual event titles, announcement topics, etc.):
+- [section 1]
+  - [sub-item]
+- [section 2]
+  - [sub-item]
+...
+
+Sections:
+
+## [Section Name]
+[structured content per section type - see agent docs]
+...
+```
+
+**To update an existing campaign:**
+```
+Update Mailchimp campaign cc67c2e105 with these details:
+
+[same structured content format as above, omit Subject/Preview/Title if unchanged]
+
+Sections:
+...
+```
+
+The agent reads the HTML template, interpolates content, and calls Mailchimp APIs. It returns the campaign ID and archive URL.
+
+### 5. Share Preview
+
+After the agent returns, share the archive URL so the user can preview:
 
 ```
-Newsletter draft created!
+Newsletter draft ready!
 - Campaign ID: [ID]
-- Subject: [SUBJECT]
+- Preview: [ARCHIVE URL]
 
-Would you like me to send a test email? Provide an email address.
+Would you like any changes? I can also send a test email to board@jetaasc.org for review.
 ```
+
+If the user wants a test email, use `mailchimp_send_test` with the campaign ID and `test_emails: ["board@jetaasc.org"]`.
+
+If changes are needed, launch the agent again with the updated content and the existing campaign_id.
 
 ## Fixed Values
 
@@ -160,3 +150,4 @@ Would you like me to send a test email? Provide an email address.
 ## Resources
 
 - `assets/template.html` - HTML email template with all styling and structure
+- `.claude/agents/newsletter-builder.md` - Subagent that handles HTML building and Mailchimp API calls
