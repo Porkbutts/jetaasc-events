@@ -18,12 +18,23 @@ Gather from user:
 - **Description**: What the event is about
 - **Cost**: Price (optional, include member/non-member pricing if applicable)
 - **RSVP Link**: Google Form link (optional)
-- **Flyer/Image**: Event artwork URL or file
+- **Flyer/Image**: Event artwork URL or local file path
 
-**Handling Google Drive URLs:** If the user provides a Google Drive share link (e.g., `https://drive.google.com/file/d/FILE_ID/view`), convert it to a direct download URL for platforms that need to download the image (Wix, Discord):
-```
-https://drive.google.com/uc?export=download&id=FILE_ID
-```
+**Handling Flyer Images:**
+
+The flyer must be a publicly accessible URL for Wix import. Resolve the image based on what the user provides:
+
+1. **Local file path** (e.g., `~/Downloads/flyer.png`):
+   - Upload to Google Drive `Public Flyers` folder (ID: `1ptC7GpyjuHmwhTTAed1Y7GmuLGY1b-XR`) using `gdrive_upload_file`
+   - The folder has public "anyone with link" view permissions, so the file inherits it
+   - Convert the returned file ID to a direct download URL: `https://drive.google.com/uc?export=download&id=FILE_ID`
+   - For Discord, use the original local file path directly (it accepts local paths)
+
+2. **Google Drive share link** (e.g., `https://drive.google.com/file/d/FILE_ID/view`):
+   - Convert to direct download URL: `https://drive.google.com/uc?export=download&id=FILE_ID`
+
+3. **Direct image URL** (e.g., `https://example.com/flyer.png`):
+   - Use as-is
 
 ### 2. Confirm Details and Select Platforms
 
