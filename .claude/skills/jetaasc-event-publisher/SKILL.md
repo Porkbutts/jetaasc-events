@@ -17,7 +17,7 @@ Gather from user:
 - **Location**: Venue name and address
 - **Description**: What the event is about
 - **Cost**: Price (optional, include member/non-member pricing if applicable)
-- **RSVP Link**: Google Form link (optional)
+- **RSVP Link**: Google Form or Partiful link (optional — see below)
 - **Flyer/Image**: Event artwork URL or local file path
 
 **Handling Flyer Images:**
@@ -36,6 +36,16 @@ The flyer must be a publicly accessible URL for Wix import. Resolve the image ba
 3. **Direct image URL** (e.g., `https://example.com/flyer.png`):
    - Use as-is
 
+### 1b. RSVP Link
+
+If the user did not provide an RSVP link and one cannot be extracted from the event description or flyer:
+
+Ask the user: "No RSVP link provided. Would you like me to create a Partiful event for RSVPs?"
+
+If yes, use the Partiful CLI (`clis/partiful.py`) to create an event with the collected details (title, date/time, location, description, image). Pass `--public` to make it discoverable. The Partiful event URL (`https://partiful.com/e/{eventId}`) becomes the RSVP link used across all other platforms.
+
+See the `partiful` skill for CLI usage details.
+
 ### 2. Confirm Details and Select Platforms
 
 Display a summary of the event details for user confirmation.
@@ -44,6 +54,7 @@ Then ask two questions using `AskUserQuestion`:
 
 **Question 1 (multiSelect: true):** "Which platforms do you want to publish to?"
 - Wix Blog
+- Partiful
 - Discord
 - Google Calendar
 - Facebook
@@ -73,6 +84,12 @@ Steps:
 6. On approval, publish draft
 7. Return published post URL
 
+### Partiful
+
+Create Partiful event using the CLI at `clis/partiful.py`. See the `partiful` skill for full CLI reference.
+
+Use `--public` to make the event discoverable. Pass `--image` with the local flyer path. The Partiful event URL (`https://partiful.com/e/{eventId}`) can be used as the RSVP link on other platforms.
+
 ### Google Calendar
 
 Create Google Calendar event using `gcal_create_event` MCP tool. See [references/platforms.md](references/platforms.md) for parameters.
@@ -96,6 +113,7 @@ Provide formatted content for manual posting. See [references/platforms.md](refe
 | Platform | Method | Status |
 |----------|--------|--------|
 | Wix Blog | Wix MCP | Ready |
+| Partiful | CLI (`clis/partiful.py`) | Ready |
 | Discord | Discord MCP | Ready |
 | Google Calendar | Google Calendar MCP | Ready |
 | Facebook | Manual | Copy/paste |
