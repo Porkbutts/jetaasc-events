@@ -42,9 +42,7 @@ If the user did not provide an RSVP link and one cannot be extracted from the ev
 
 Ask the user: "No RSVP link provided. Would you like me to create a Partiful event for RSVPs?"
 
-If yes, use the Partiful CLI (`clis/partiful.py`) to create an event with the collected details (title, date/time, location, description, image). Pass `--public` to make it discoverable. The Partiful event URL (`https://partiful.com/e/{eventId}`) becomes the RSVP link used across all other platforms.
-
-See the `partiful` skill for CLI usage details.
+If yes, **you MUST read the `partiful` skill first** (at `.claude/skills/partiful/SKILL.md`) before proceeding. It contains the full CLI reference, auth flow, and command syntax. The Partiful event URL becomes the RSVP link used across all other platforms.
 
 ### 2. Confirm Details and Select Platforms
 
