@@ -54,7 +54,6 @@ Then ask two questions using `AskUserQuestion`:
 
 **Question 1 (multiSelect: true):** "Which platforms do you want to publish to?"
 - Wix Blog
-- Partiful
 - Discord
 - Google Calendar
 - Facebook
@@ -84,12 +83,6 @@ Steps:
 6. On approval, publish draft
 7. Return published post URL
 
-### Partiful
-
-Create Partiful event using the CLI at `clis/partiful.py`. See the `partiful` skill for full CLI reference.
-
-Use `--public` to make the event discoverable. Pass `--image` with the local flyer path. The Partiful event URL (`https://partiful.com/e/{eventId}`) can be used as the RSVP link on other platforms.
-
 ### Google Calendar
 
 Create Google Calendar event using `gcal_create_event` MCP tool. See [references/platforms.md](references/platforms.md) for parameters.
@@ -113,7 +106,6 @@ Provide formatted content for manual posting. See [references/platforms.md](refe
 | Platform | Method | Status |
 |----------|--------|--------|
 | Wix Blog | Wix MCP | Ready |
-| Partiful | CLI (`clis/partiful.py`) | Ready |
 | Discord | Discord MCP | Ready |
 | Google Calendar | Google Calendar MCP | Ready |
 | Facebook | Manual | Copy/paste |
