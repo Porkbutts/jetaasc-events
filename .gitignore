@@ -4,6 +4,9 @@
 # Service account keys
 *.json.key
 
+# Partiful auth
+clis/.partiful-auth.json
+
 # Dependencies and build output
 node_modules/
 dist/
