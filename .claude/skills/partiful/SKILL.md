@@ -61,6 +61,21 @@ python3 clis/partiful.py create \
 
 Returns JSON with `eventId` and `url` (e.g., `https://partiful.com/e/{eventId}`).
 
+**Shell escaping caveat:** The Bash tool sandbox escapes `!` to `\!` in arguments. To avoid this, wrap text arguments containing `!` in a heredoc:
+
+```bash
+python3 clis/partiful.py create \
+  --title "$(cat <<'EOF'
+My Event!
+EOF
+)" \
+  --description "$(cat <<'EOF'
+Join us! It will be fun!
+EOF
+)" \
+  # ... other args
+```
+
 Available themes: `aquamarine`, `aquatica`, `aurora`, `beach`, `beer`, `blacklight`, `bokeh`, `bubblegum`, `candy`, `champagne`, `cloudflow`, `crystal`, `customColor`, `darkSky`, `daybreak`, `forest`, `galaxy`, `girlyMac`, `golden`, `grass`, `ice`, `ink`, `kaleidoscope`, `karaoke`, `komorebi`, `lavaRave`, `lofiGrass`, `meadows`, `midday`, `midnight`, `oxblood`, `parchment`, `phantom`, `pool`, `rainbowGlitter`, `rush`, `shroomset`, `ski`, `slate`, `snowPaws`, `starburst`, `storybloom`, `sunrise`, `sunset`, `toile`, `twilight`, `watercolor`, `whisky`, `winterWonderland`.
 
 Available effects (default `none`): `none`, `balloons`, `basketball`, `beachballs`, `beerPong`, `bows`, `bubbles`, `bunnies`, `cascade`, `cash`, `christmasLights`, `confetti`, `confettiExplosion`, `crayons`, `dandelions`, `disco`, `doge`, `fireCannons`, `fireflies`, `fireworks`, `foils`, `football`, `gelt`, `ghosts`, `gingerbread`, `ginkgo`, `glowbugs`, `graduation`, `handprints`, `hearts`, `kisses`, `lasers`, `leaves`, `lightning`, `lights`, `magnolias`, `pizzaToppings`, `presents`, `sakura`, `shadowBats`, `shamrock`, `smoke`, `snowflakes`, `snowman`, `spaceInvaders`, `sparkles`, `spiders`, `spiderwebs`, `starrySky`, `stars`, `sunbeams`, `tennis`, `thanksgivingFood`, `winterCreatures`.
@@ -91,10 +106,6 @@ Returns event fields as JSON.
 ```bash
 python3 clis/partiful.py delete <event_id>
 ```
-
-## Integration with Event Publisher
-
-When publishing a JETAASC event to Partiful alongside other platforms (Wix, Discord, Google Calendar), use the create command and return the Partiful event URL (`https://partiful.com/e/{eventId}`) to the user.
 
 ## Troubleshooting
 

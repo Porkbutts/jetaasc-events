@@ -42,7 +42,7 @@ If the user did not provide an RSVP link and one cannot be extracted from the ev
 
 Ask the user: "No RSVP link provided. Would you like me to create a Partiful event for RSVPs?"
 
-If yes, **you MUST read the `partiful` skill first** (at `.claude/skills/partiful/SKILL.md`) before proceeding. It contains the full CLI reference, auth flow, and command syntax. The Partiful event URL becomes the RSVP link used across all other platforms.
+If yes, **you MUST read the `partiful` skill first** (at `.claude/skills/partiful/SKILL.md`) before proceeding. It contains the full CLI reference, auth flow, and command syntax. Pass the event details you already collected (title, date/time, location, description, image) to the Partiful create command — do not re-ask the user for these. The returned Partiful event URL becomes the RSVP link used across all other platforms.
 
 ### 2. Confirm Details and Select Platforms
 
