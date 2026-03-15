@@ -24,16 +24,14 @@ Auth tokens are stored at `clis/.partiful-auth.json` (gitignored). If the file e
 Use the two-step non-interactive flow (since `input()` doesn't work in Bash tool):
 
 ```bash
-# Step 1: Send SMS code
-python3 clis/partiful.py send-code REDACTED
+# Step 1: Send SMS code — ask the user for their phone number first
+python3 clis/partiful.py send-code <PHONE_NUMBER>
 
 # Step 2: Ask user for the code, then complete login
-python3 clis/partiful.py login REDACTED --code <CODE>
+python3 clis/partiful.py login <PHONE_NUMBER> --code <CODE>
 ```
 
 **Important:** You cannot call `login` without `--code` because that triggers interactive `input()`. Always use `send-code` first, ask the user for the code via `AskUserQuestion`, then call `login` with `--code`.
-
-Phone number: `REDACTED` (JETAASC account).
 
 ## Commands
 
