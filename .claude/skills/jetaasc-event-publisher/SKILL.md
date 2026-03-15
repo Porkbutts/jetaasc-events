@@ -81,6 +81,12 @@ Create Google Calendar event using `gcal_create_event` MCP tool. See [references
 
 Create Discord scheduled event using `discord_create_event` MCP tool. See [references/platforms.md](references/platforms.md) for parameters.
 
+After creating the event, construct and return the event link using this format:
+```
+https://discord.com/events/{GUILD_ID}/{EVENT_ID}
+```
+The Guild ID is `1066185009695838268` (from Discord MCP config). The Event ID is returned by `discord_create_event`.
+
 ### Facebook (Manual)
 
 Provide formatted content for manual posting. See [references/platforms.md](references/platforms.md) for format.

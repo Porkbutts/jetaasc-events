@@ -137,6 +137,13 @@ Then pass the local path to `image_path`.
 | `location` | Venue address (required for EXTERNAL events) |
 | `image_path` | (Optional) Local file path to cover image (PNG, JPG, GIF, WebP) |
 
+### Event Link Format
+After creating the event, construct a shareable link:
+```
+https://discord.com/events/1066185009695838268/{EVENT_ID}
+```
+The Event ID is returned by `discord_create_event` in the response.
+
 ### Example
 ```
 discord_create_event(
