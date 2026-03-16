@@ -17,7 +17,7 @@ Gather from user:
 - **Location**: Venue name and address
 - **Description**: What the event is about
 - **Cost**: Price (optional, include member/non-member pricing if applicable)
-- **RSVP Link**: Google Form or Partiful link (optional — see below)
+- **RSVP Link**: Partiful or Google Form link (optional — see below)
 - **Flyer/Image**: Event artwork URL or local file path
 
 **Handling Flyer Images:**
@@ -25,7 +25,7 @@ Gather from user:
 The flyer must be a publicly accessible URL for Wix import. Resolve the image based on what the user provides:
 
 1. **Local file path** (e.g., `~/Downloads/flyer.png`):
-   - Upload to Google Drive `Public Flyers` folder (ID: `1ptC7GpyjuHmwhTTAed1Y7GmuLGY1b-XR`) using `gdrive_upload_file`
+   - Upload to Google Drive `Public Flyers` folder (ID: `1ptC7GpyjuHmwhTTAed1Y7GmuLGY1b-XR`) using the `/gws-drive-upload` skill
    - The folder has public "anyone with link" view permissions, so the file inherits it
    - Convert the returned file ID to a direct download URL: `https://drive.google.com/uc?export=download&id=FILE_ID`
    - For Discord, use the original local file path directly (it accepts local paths)
@@ -36,15 +36,16 @@ The flyer must be a publicly accessible URL for Wix import. Resolve the image ba
 3. **Direct image URL** (e.g., `https://example.com/flyer.png`):
    - Use as-is
 
-### 1b. RSVP Link
+### 2. RSVP Link
 
 If the user did not provide an RSVP link and one cannot be extracted from the event description or flyer:
 
-Ask the user: "No RSVP link provided. Would you like me to create a Partiful event for RSVPs?"
+Ask the user: "No RSVP link provided. Would you like me to create an RSVP page?"
+- **Partiful** (recommended) — creates a public RSVP page with event details. Read the `partiful` skill (`.claude/skills/partiful/SKILL.md`) for CLI reference and command syntax. Pass the event details you already collected — do not re-ask the user.
+- **Google Form** — use when you need custom fields (e.g., dietary restrictions, T-shirt sizes). Read [references/google-form-rsvp.md](references/google-form-rsvp.md) for the full creation workflow.
+- **Skip** — no RSVP needed
 
-If yes, **you MUST read the `partiful` skill first** (at `.claude/skills/partiful/SKILL.md`) before proceeding. It contains the full CLI reference, auth flow, and command syntax. Pass the event details you already collected (title, date/time, location, description, image) to the Partiful create command — do not re-ask the user for these. The returned Partiful event URL becomes the RSVP link used across all other platforms.
-
-### 2. Confirm Details and Select Platforms
+### 3. Confirm Details and Select Platforms
 
 Display a summary of the event details for user confirmation.
 
@@ -60,50 +61,15 @@ Then ask two questions using `AskUserQuestion`:
 - In parallel (Recommended) - Publish to all platforms simultaneously
 - Sequential - Publish one at a time, confirming each before proceeding
 
-### 3. Publish to Selected Platforms
+### 4. Publish to Selected Platforms
 
 Execute publishing based on user selections. If parallel, launch all platform tasks simultaneously. If sequential, complete each platform before moving to the next.
 
----
+Read the reference doc for each selected platform before publishing:
 
-## Platform Details
-
-### Wix Blog
-
-Use Wix MCP tools. See [references/platforms.md](references/platforms.md) for site ID, API endpoints, category/tag IDs. See [references/wix-blog-format.md](references/wix-blog-format.md) for Ricos JSON structure.
-
-Steps:
-1. Upload flyer to Wix Media Manager (Import File endpoint)
-2. Select appropriate tags by analyzing event title, description, and location
-3. Create draft post with title, image, richContent, category, and tags
-4. Share draft preview link for user confirmation
-5. If user has feedback, update draft via PATCH endpoint. Repeat until approved.
-6. On approval, publish draft
-7. Return published post URL
-
-### Google Calendar
-
-Create Google Calendar event using `gcal_create_event` MCP tool. See [references/platforms.md](references/platforms.md) for parameters.
-
-### Discord
-
-Create Discord scheduled event using `discord_create_event` MCP tool. See [references/platforms.md](references/platforms.md) for parameters.
-
-After creating the event, construct and return the event link using this format:
-```
-https://discord.com/events/{GUILD_ID}/{EVENT_ID}
-```
-The Guild ID is `1066185009695838268` (from Discord MCP config). The Event ID is returned by `discord_create_event`.
-
-### Facebook (Manual)
-
-Provide formatted content for manual posting. See [references/platforms.md](references/platforms.md) for format.
-
-## Quick Reference
-
-| Platform | Method | Status |
-|----------|--------|--------|
-| Wix Blog | Wix MCP | Ready |
-| Discord | Discord MCP | Ready |
-| Google Calendar | Google Calendar MCP | Ready |
-| Facebook | Manual | Copy/paste |
+| Platform | Reference | Method |
+|----------|-----------|--------|
+| Wix Blog | [references/wix-blog.md](references/wix-blog.md) | Wix MCP |
+| Google Calendar | [references/google-calendar.md](references/google-calendar.md) | GWS CLI (`/gws-calendar-insert`) |
+| Discord | [references/discord.md](references/discord.md) | Discord MCP |
+| Facebook | [references/facebook.md](references/facebook.md) | Manual (copy/paste) |

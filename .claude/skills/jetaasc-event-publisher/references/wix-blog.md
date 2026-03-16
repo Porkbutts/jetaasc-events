@@ -1,10 +1,95 @@
-# Wix Blog Post Format
+# Wix Blog Publishing
 
-Ricos JSON structure for blog post rich content.
+## Site ID
+`68b9accd-a629-4996-a8e3-bb4a7ed9a186`
 
-## Node Examples
+## Category ID for "Upcoming"
+`b2dba553-f903-4dd8-859a-94afe80730e3`
 
-### Image Node
+## Common Tags
+| Tag | ID |
+|-----|-----|
+| shinnenkai | a93eb3fa-3212-4058-abca-9168f0e9de6f |
+| bonenkai | 6b7de19c-0aed-477c-80b2-48a2ff277f0d |
+| networking | f06e35c4-925c-4049-9a36-822f3175e952 |
+| Japanese | a257ee18-8ee3-44e5-83e3-5b72995c7ffb |
+| los angeles | 8787c4f7-f690-4785-9382-fd8b89439a34 |
+| orange county | bd21c0d1-659e-40c4-9d12-663b11a5c489 |
+| san diego | e058cb3c-3073-4b67-8434-3713167e939e |
+| little tokyo | e5adf867-9283-4d80-8b08-a52ef97c3f75 |
+| karaoke | 8098c398-8293-46f2-b365-e4019223c64e |
+| movie night | 5f49e036-7f64-4714-950c-857ab3f5aa0d |
+| natsukashii-kai | bcad48d3-a0a9-4e18-bd3d-7181af411a6d |
+| nihongo dake dinner | 0c38eb38-27e2-475c-999f-dd01291a5434 |
+| boba banter | 4e6e89fd-adb1-48e6-bc2a-dba8e34155c3 |
+| welcome back | 91b5fce7-7329-4332-a776-5521fca53b12 |
+| online event | 36942460-f118-4126-9ba0-59bed75c4db8 |
+| virtual | 82463a96-f9da-4061-b0a1-cffdc0f03cea |
+
+### Creating New Tags
+If the event needs a tag that doesn't exist, create it first:
+```
+POST https://www.wixapis.com/blog/v3/tags
+Body: {"tag": {"label": "new tag name", "language": "en"}}
+```
+The response includes the new tag's `id` to use in the blog post's `tagIds` array.
+
+### Listing All Tags
+To find existing tags or check if a tag exists:
+```
+GET https://www.wixapis.com/blog/v3/tags
+```
+
+## Uploading Images
+Before creating a blog post, upload the event flyer to Wix Media Manager:
+```
+POST https://www.wixapis.com/site-media/v1/files/import
+Body: {"url": "<image-url>", "displayName": "<filename>.png", "mimeType": "image/png"}
+```
+Use the returned `file.id` in the blog post.
+
+## API Endpoints
+
+**Create Draft:**
+```
+POST https://www.wixapis.com/blog/v3/draft-posts
+```
+
+**Update Draft:**
+```
+PATCH https://www.wixapis.com/blog/v3/draft-posts/{draftPostId}
+Body: {"draftPost": {"id": "{draftPostId}", "richContent": {...}}}
+```
+Use this to apply user feedback/changes before publishing.
+
+**Publish Draft:**
+```
+POST https://www.wixapis.com/blog/v3/draft-posts/{draftPostId}/publish
+```
+
+## Draft Preview Link
+After creating a draft, share this link for review:
+```
+https://manage.wix.com/dashboard/68b9accd-a629-4996-a8e3-bb4a7ed9a186/blog/{draftPostId}/edit
+```
+
+## Publishing Steps
+
+1. Upload flyer to Wix Media Manager (Import File endpoint)
+2. Select appropriate tags by analyzing event title, description, and location
+3. Create draft post with title, image, richContent, category, and tags
+4. Share draft preview link for user confirmation
+5. If user has feedback, update draft via PATCH endpoint. Repeat until approved.
+6. On approval, publish draft
+7. Return published post URL
+
+## Ricos JSON Format
+
+Blog post rich content uses the Ricos JSON structure.
+
+### Node Examples
+
+#### Image Node
 ```json
 {
   "type": "IMAGE",
@@ -25,7 +110,7 @@ Ricos JSON structure for blog post rich content.
 }
 ```
 
-### Paragraph with Plain Text
+#### Paragraph with Plain Text
 ```json
 {
   "type": "PARAGRAPH",
@@ -44,7 +129,7 @@ Ricos JSON structure for blog post rich content.
 }
 ```
 
-### Bold Text
+#### Bold Text
 ```json
 {
   "type": "TEXT",
@@ -56,7 +141,7 @@ Ricos JSON structure for blog post rich content.
 }
 ```
 
-### Italic Text
+#### Italic Text
 ```json
 {
   "type": "TEXT",
@@ -68,7 +153,7 @@ Ricos JSON structure for blog post rich content.
 }
 ```
 
-### Link
+#### Link
 ```json
 {
   "type": "TEXT",
@@ -87,7 +172,7 @@ Ricos JSON structure for blog post rich content.
 }
 ```
 
-### Heading Node
+#### Heading Node
 ```json
 {
   "type": "HEADING",
@@ -108,7 +193,7 @@ Ricos JSON structure for blog post rich content.
 }
 ```
 
-### Empty Paragraph (Visual Break / Spacing)
+#### Empty Paragraph (Visual Break / Spacing)
 To add visual spacing between sections, use an empty paragraph node with no text nodes:
 ```json
 {
@@ -125,16 +210,14 @@ To add visual spacing between sections, use an empty paragraph node with no text
 - Before the What/When/Where/Cost section
 - After the What/When/Where/Cost section (before closing text)
 
-## Example: Complete Event Post
-
-Category and tag IDs are in [platforms.md](platforms.md).
+### Example: Complete Event Post
 
 ```json
 {
   "draftPost": {
     "title": "JETAASC Shinenkai 2026",
-    "categoryIds": ["<upcoming-category-id>"],
-    "tagIds": ["<shinnenkai-tag-id>", "<other-tag-ids>"],
+    "categoryIds": ["b2dba553-f903-4dd8-859a-94afe80730e3"],
+    "tagIds": ["a93eb3fa-3212-4058-abca-9168f0e9de6f"],
     "richContent": {
       "nodes": [
         {

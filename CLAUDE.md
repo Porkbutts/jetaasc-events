@@ -7,7 +7,7 @@ Assume events are volunteer-run and budget-conscious.
 
 ## Google Workspace
 
-- Always use the gsuite MCP tools (`gdocs_*`, `gdrive_*`, `gsheets_*`, `gcal_*`, `gmail_*`) to access Google Docs, Drive, Sheets, Calendar, and Gmail links. Do not use WebFetch or Bash curl for Google Workspace URLs.
+- Always use the `gws` CLI (`@googleworkspace/cli`) to access Google Docs, Drive, Sheets, Calendar, Gmail, and Forms. Do not use WebFetch or Bash curl for Google Workspace URLs.
 
 ## Mailchimp
 

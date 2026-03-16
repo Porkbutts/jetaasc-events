@@ -22,7 +22,7 @@ Automates event publishing workflow:
 |----------|--------|--------|
 | Wix Blog | Wix MCP | Ready |
 | Discord | Discord MCP | Ready |
-| Google Calendar | GSuite MCP (`gcal_*`) | Ready |
+| Google Calendar | GWS CLI (`gws calendar`) | Ready |
 | Facebook | Manual | Copy/paste |
 
 **Trigger:** `/jetaasc-event-publisher` or ask to "publish an event"
@@ -125,9 +125,9 @@ An MCP server for managing Mailchimp email campaigns.
    }
    ```
 
-### GSuite MCP (Google Calendar)
+### GWS CLI (Google Workspace)
 
-Google Calendar is accessed via the GSuite MCP server plugin, which provides `gcal_*` tools (`gcal_create_event`, `gcal_list_events`, etc.). Follow the GSuite MCP setup instructions to configure it.
+Google Workspace (Calendar, Docs, Drive, Sheets, Gmail, Forms) is accessed via the `gws` CLI (`@googleworkspace/cli`). Install with `npm install -g @googleworkspace/cli` and authenticate with `gws auth login`.
 
 ### Mailchimp MCP Server
 
