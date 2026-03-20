@@ -13,8 +13,22 @@ Assume events are volunteer-run and budget-conscious.
 
 ## Google Workspace
 
-- Always use the `gws` CLI (`@googleworkspace/cli`) to access Google Docs, Drive, Sheets, Calendar, Gmail, and Forms. Do not use WebFetch or Bash curl for Google Workspace URLs.
+- Do not use WebFetch or Bash curl for Google Workspace URLs.
 - **Before any GWS usage**, check auth status with `gws auth status`. The active account must be `adrian@jetaasc.org`. If it shows `pumpadrian@gmail.com` or any other account, run `gws auth logout` and prompt the user to log back in with the correct account.
+
+### Skills FIRST — MANDATORY
+
+**ALWAYS use a `/gws-*` skill before attempting raw CLI calls.** Skills contain the exact command syntax, flags, and patterns — they prevent the fumbling that happens when guessing at CLI args.
+
+The naming convention is predictable: `/gws-<service>` for the general skill, `/gws-<service>-<action>` for specific operations. For example, working with Drive? Run `/gws-drive`. Sending email? `/gws-gmail-send`. Reading a spreadsheet? `/gws-sheets-read`. Creating a calendar event? `/gws-calendar-insert`.
+
+Check the available skills list in the system prompt — there are skills for Gmail, Calendar, Drive, Docs, Sheets, and Forms, plus `recipe-*` skills for multi-step workflows like saving attachments, scheduling events, and organizing folders.
+
+**Do NOT guess at `gws` CLI arguments.** If you catch yourself writing a `gws` command without having loaded a skill first, stop and load the matching skill.
+
+### Fallback: `gws` CLI (only when no skill exists)
+
+If and only if no skill covers the task, fall back to the `gws` command-line tool. Even then, run `gws <service> --help` and `gws <service> <resource> --help` to discover the exact commands, flags, and parameter formats before executing. Never guess.
 
 ## Mailchimp
 
