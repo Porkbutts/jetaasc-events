@@ -5,6 +5,7 @@ import argparse
 import json
 import mimetypes
 import os
+import re
 import sys
 import urllib.request
 import urllib.parse
@@ -176,6 +177,76 @@ def firestore_get(event_id, token):
         return json.loads(resp.read())
 
 
+def _fs_str(v):
+    return {"stringValue": v}
+
+
+def _fs_arr(vals):
+    return {"arrayValue": {"values": [{"stringValue": v} for v in vals]}}
+
+
+def location_fs_fields(location_str):
+    """Build Firestore-typed fields for a location.
+
+    Always sets locationName + location (plain display strings). When the
+    string has enough comma-separated parts to look like a real address
+    ("Venue, Street, City, ST ZIP"), also builds the structured locationInfo
+    map that Partiful needs to show a proper location (map pin, maps links)
+    instead of "no location set". Maps URLs are built from the address text,
+    so no Google API key is required.
+    """
+    fields = {
+        "locationName": _fs_str(location_str),
+        "location": _fs_str(location_str),
+    }
+    parts = [p.strip() for p in location_str.split(",") if p.strip()]
+    if len(parts) >= 3:
+        name = parts[0]
+        street = parts[1]
+        rest = parts[2:]
+        if len(rest) >= 2:
+            city = rest[0]
+            state_zip = rest[-1]
+            state = state_zip.split()[0] if state_zip.split() else state_zip
+            line2_full = f"{city}, {state_zip}"
+            line2_disp = f"{city}, {state}"
+            approx = f"{city}, {state}"
+        else:
+            city = rest[0]
+            line2_full = city
+            line2_disp = city
+            approx = city
+        has_zip = bool(re.search(r"\b\d{5}(?:-\d{4})?\b", location_str))
+        query = urllib.parse.quote(f"{street}, {line2_full}")
+        fields["locationInfo"] = {"mapValue": {"fields": {
+            "type": _fs_str("structured"),
+            "hasPostCode": {"booleanValue": has_zip},
+            "mapsInfo": {"mapValue": {"fields": {
+                "name": _fs_str(name),
+                "addressLines": _fs_arr([street, line2_full]),
+                "approximateLocation": _fs_str(approx),
+                "appleMapsUrl": _fs_str(f"http://maps.apple.com/?address={query}"),
+                "googleMapsUrl": _fs_str(
+                    f"https://www.google.com/maps/search/?api=1&query={query}"),
+            }}},
+            "displayAddressLines": _fs_arr([street, line2_disp]),
+        }}}
+    return fields
+
+
+def patch_event(event_id, fs_fields, token):
+    """PATCH a set of Firestore-typed fields onto an event document."""
+    mask = "&".join(f"updateMask.fieldPaths={k}" for k in fs_fields)
+    url = f"{FIRESTORE_BASE}/events/{event_id}?{mask}"
+    body = json.dumps({"fields": fs_fields}).encode()
+    req = urllib.request.Request(url, data=body, method="PATCH", headers={
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    })
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read())
+
+
 def normalize_phone(phone):
     if not phone.startswith("+"):
         phone = "+1" + phone
@@ -301,11 +372,12 @@ def cmd_create(args):
 
     if args.description:
         event["description"] = args.description
-    if args.location:
-        event["locationName"] = args.location
 
     result = api_call("createEvent", {"event": event, "cohostIds": []}, token, uid)
     event_id = result["result"]["data"]
+
+    if args.location:
+        patch_event(event_id, location_fs_fields(args.location), token)
 
     if args.image:
         upload_data = upload_image(args.image, token, uid)
@@ -338,8 +410,6 @@ def cmd_update(args):
         fields["title"] = args.title
     if args.description:
         fields["description"] = args.description
-    if args.location:
-        fields["locationName"] = args.location
     if args.date and args.time:
         start_dt = datetime.strptime(f"{args.date} {args.time}", "%Y-%m-%d %H:%M")
         fields["startDate"] = start_dt.isoformat() + "Z"
@@ -352,7 +422,7 @@ def cmd_update(args):
     if args.public:
         fields["isPublic"] = True
 
-    if not fields:
+    if not fields and not args.location:
         print("No fields to update. Use --title, --description, --location, --date + --time, --image, --public.", file=sys.stderr)
         sys.exit(1)
 
@@ -367,6 +437,11 @@ def cmd_update(args):
             fs_fields[k] = {"booleanValue": v}
         elif isinstance(v, str):
             fs_fields[k] = {"stringValue": v}
+
+    # Location (may add structured locationInfo alongside locationName/location)
+    if args.location:
+        fs_fields.update(location_fs_fields(args.location))
+        fields["location"] = args.location
 
     if fs_fields:
         mask = "&".join(f"updateMask.fieldPaths={k}" for k in fs_fields)
@@ -421,7 +496,9 @@ def main():
     create_p.add_argument("--end-date", help="End date YYYY-MM-DD")
     create_p.add_argument("--end-time", help="End time HH:MM (24h, UTC)")
     create_p.add_argument("--timezone", default="America/Los_Angeles")
-    create_p.add_argument("--location", help="Location name")
+    create_p.add_argument("--location", help="Location. Pass a full address "
+                          "\"Venue, Street, City, ST ZIP\" to set a structured "
+                          "location (map pin); a plain string sets just the name.")
     create_p.add_argument("--description", help="Event description")
     create_p.add_argument("--theme", default="champagne", choices=THEMES,
                           help="Theme name")
@@ -435,7 +512,9 @@ def main():
     update_p.add_argument("event_id", help="Event ID")
     update_p.add_argument("--title", help="New title")
     update_p.add_argument("--description", help="New description")
-    update_p.add_argument("--location", help="New location")
+    update_p.add_argument("--location", help="New location. Pass a full address "
+                          "\"Venue, Street, City, ST ZIP\" to set a structured "
+                          "location (map pin); a plain string sets just the name.")
     update_p.add_argument("--date", help="New start date YYYY-MM-DD")
     update_p.add_argument("--time", help="New start time HH:MM (24h, UTC)")
     update_p.add_argument("--image", help="Path to image file (PNG, JPG, GIF, WebP)")

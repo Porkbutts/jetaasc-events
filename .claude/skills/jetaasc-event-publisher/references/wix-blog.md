@@ -81,7 +81,7 @@ https://manage.wix.com/dashboard/68b9accd-a629-4996-a8e3-bb4a7ed9a186/blog/{draf
 4. Share draft preview link for user confirmation
 5. If user has feedback, update draft via PATCH endpoint. Repeat until approved.
 6. On approval, publish draft
-7. Return published post URL
+7. Return published post URL: `https://www.jetaasc.org/post/{slug}`
 
 ## Ricos JSON Format
 

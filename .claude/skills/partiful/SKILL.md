@@ -45,13 +45,15 @@ python3 clis/partiful.py create \
   --end-date 2026-03-20 \
   --end-time 04:00 \
   --timezone "America/Los_Angeles" \
-  --location "Venue Name, City" \
+  --location "Venue Name, 123 Main St, City, ST ZIP" \
   --description "Event description" \
   --theme champagne \
   --effect sparkles \
   --image /path/to/flyer.png \
   --public
 ```
+
+**Location:** Pass a full address as `"Venue, Street, City, ST ZIP"` (3+ comma-separated parts) to set a **structured location** — the map pin that shows on the event page. The CLI builds the `locationInfo` (name, address lines, Apple/Google Maps links) from the address text, so no Google API key is needed. A plainer string (fewer parts, e.g. `"Suehiro, Little Tokyo"`) only sets the display name and Partiful shows "no location set" for the pin. Same behavior on `update --location`.
 
 **Date/time are in UTC.** Convert from Pacific time:
 - PST (Nov-Mar): add 8 hours (6pm PST = 02:00 next day UTC)

@@ -32,4 +32,26 @@ If and only if no skill covers the task, fall back to the `gws` command-line too
 
 ## Mailchimp
 
-- The `mailchimp_list_campaigns` tool returns campaigns in arbitrary order (not sorted by date) and has no sort parameter. When looking for a specific campaign, use `status: "save"` with a high `count` (e.g., 50) and search the results by title/subject. Do not assume the first results are the most recent.
+### Finding recent campaigns (newsletters)
+
+The `mailchimp_list_campaigns` MCP tool only accepts `status` + `count` — no sort, date filter, or offset — and returns campaigns oldest-first. Recent newsletters are `sent` campaigns buried 400+ entries deep (history goes back to 2009), so **do not** use it to hunt for a specific or recent newsletter.
+
+Instead, hit the Mailchimp REST API directly to find the campaign ID, then use the MCP tools (`mailchimp_get_content`, `mailchimp_get_campaign`) with that ID as usual.
+
+The API key lives in `.mcp.json` under `mcpServers.mailchimp.env.MAILCHIMP_API_KEY`; the datacenter is the suffix after the dash (e.g. `...-us1` → `us1`). Auth is HTTP basic (`--user "any:$KEY"`).
+
+```bash
+KEY=$(python3 -c "import json;print(json.load(open('.mcp.json'))['mcpServers']['mailchimp']['env']['MAILCHIMP_API_KEY'])")
+DC="${KEY##*-}"   # datacenter, e.g. us1
+FIELDS="fields=campaigns.id,campaigns.settings.title,campaigns.settings.subject_line,campaigns.send_time"
+
+# Most recent N sent campaigns (newest first)
+curl -s --user "any:$KEY" \
+  "https://$DC.api.mailchimp.com/3.0/campaigns?status=sent&sort_field=send_time&sort_dir=DESC&count=12&$FIELDS"
+
+# A specific month (date-bounded, ISO 8601)
+curl -s --user "any:$KEY" \
+  "https://$DC.api.mailchimp.com/3.0/campaigns?status=sent&since_send_time=2026-01-01T00:00:00-08:00&before_send_time=2026-02-01T00:00:00-08:00&$FIELDS"
+```
+
+Then read content with the returned `id` via the MCP `mailchimp_get_content` tool (or `GET /3.0/campaigns/{id}/content`). Focus queries on the last few years; there's no need to page back through the full history.
