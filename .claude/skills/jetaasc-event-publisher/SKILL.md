@@ -29,7 +29,7 @@ The flyer must be a publicly accessible URL for Wix import. Resolve the image ba
    - The folder has public "anyone with link" view permissions, so the file inherits it
    - Convert the returned file ID to a direct image URL: `https://lh3.googleusercontent.com/d/FILE_ID`
    - The `uc?export=download` format redirects through an HTML page and may fail for server-side imports (e.g., Wix)
-   - For Discord, use the original local file path directly (it accepts local paths)
+   - For Discord and Facebook, use the original local file path directly (both take local paths)
 
 2. **Google Drive share link** (e.g., `https://drive.google.com/file/d/FILE_ID/view`):
    - Convert to direct image URL: `https://lh3.googleusercontent.com/d/FILE_ID`
@@ -73,4 +73,8 @@ Read the reference doc for each selected platform before publishing:
 | Wix Blog | [references/wix-blog.md](references/wix-blog.md) | Wix MCP |
 | Google Calendar | [references/google-calendar.md](references/google-calendar.md) | GWS CLI (`/gws-calendar-insert`) |
 | Discord | [references/discord.md](references/discord.md) | `dc` CLI |
-| Facebook | [references/facebook.md](references/facebook.md) | Manual (copy/paste) |
+| Facebook | [references/facebook.md](references/facebook.md) | Browser automation (`claude-in-chrome`) |
+
+Facebook is the one platform that does not publish on its own. The agent fills the
+entire event form and stops; Adrian reviews it in the browser and clicks "Create
+event" himself.
