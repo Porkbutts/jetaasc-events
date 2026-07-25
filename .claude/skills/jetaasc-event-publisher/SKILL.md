@@ -72,5 +72,5 @@ Read the reference doc for each selected platform before publishing:
 |----------|-----------|--------|
 | Wix Blog | [references/wix-blog.md](references/wix-blog.md) | Wix MCP |
 | Google Calendar | [references/google-calendar.md](references/google-calendar.md) | GWS CLI (`/gws-calendar-insert`) |
-| Discord | [references/discord.md](references/discord.md) | Discord MCP |
+| Discord | [references/discord.md](references/discord.md) | `dc` CLI |
 | Facebook | [references/facebook.md](references/facebook.md) | Manual (copy/paste) |

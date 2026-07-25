@@ -21,8 +21,9 @@ Automates event publishing workflow:
 | Platform | Method | Status |
 |----------|--------|--------|
 | Wix Blog | Wix MCP | Ready |
-| Discord | Discord MCP | Ready |
+| Discord | `dc` CLI | Ready |
 | Google Calendar | GWS CLI (`gws calendar`) | Ready |
+| Partiful (RSVP) | `partiful` CLI | Ready |
 | Facebook | Manual | Copy/paste |
 
 **Trigger:** `/jetaasc-event-publisher` or ask to "publish an event"
@@ -53,18 +54,15 @@ Archives past JETAASC events by moving blog posts from "Upcoming" to "Past Event
 
 **Trigger:** `/wix-blog-archiver` or ask to "archive past events"
 
-### Discord Events MCP Server
+### CLIs
 
-Located in `mcp-servers/discord-events-mcp-server/`
+Located in `clis/` — see [clis/README.md](clis/README.md). Both are Python 3
+stdlib only, run by name from anywhere via a symlink on `PATH`.
 
-An MCP server for managing Discord Guild Scheduled Events.
-
-**Tools provided:**
-- `discord_create_event` - Create a new scheduled event
-- `discord_list_events` - List all scheduled events
-- `discord_get_event` - Get details of a specific event
-- `discord_update_event` - Update an existing event
-- `discord_delete_event` - Delete an event
+| CLI | Docs | What it does |
+|-----|------|--------------|
+| `dc` | [clis/dc.md](clis/dc.md) | Thin CRUD wrapper over the Discord REST API: messages, threads, channels, scheduled events |
+| `partiful` | [clis/partiful.md](clis/partiful.md) | Create, update, get, delete Partiful RSVP pages |
 
 ### Mailchimp MCP Server
 
@@ -95,34 +93,21 @@ An MCP server for managing Mailchimp email campaigns.
 
 ## Setup
 
-### Discord MCP Server
+### Discord (`dc` CLI)
 
 1. Create a Discord application at https://discord.com/developers/applications
 2. Create a bot and copy the bot token
-3. Enable "Create Events" and "Manage Events" permission
-4. Invite bot to your Discord server
-
-5. Build the server:
-   ```bash
-   cd mcp-servers/discord-events-mcp-server
-   npm install
-   npm run build
+3. Grant the bot role Send Messages, Create Events, and Manage Events
+4. Invite the bot to your Discord server
+5. Put the credentials in `.env` at the repo root (gitignored):
+   ```sh
+   DISCORD_BOT_TOKEN=your-bot-token
+   DISCORD_GUILD_ID=your-guild-id
    ```
-
-6. Add to your Claude Code MCP config (`~/.claude/mcp.json`):
-   ```json
-   {
-     "mcpServers": {
-       "discord-events": {
-         "command": "node",
-         "args": ["/path/to/mcp-servers/discord-events-mcp-server/dist/index.js"],
-         "env": {
-           "DISCORD_BOT_TOKEN": "your-bot-token",
-           "DISCORD_GUILD_ID": "your-guild-id"
-         }
-       }
-     }
-   }
+6. Symlink the CLI onto your `PATH`:
+   ```bash
+   ln -s "$(pwd)/clis/dc.py" ~/.local/bin/dc
+   dc auth whoami
    ```
 
 ### GWS CLI (Google Workspace)
