@@ -1,16 +1,22 @@
 ---
 name: partiful
-description: Create, update, get, and delete events on Partiful using the CLI at clis/partiful.py. Use when user wants to publish, create, update, or delete a Partiful event. Triggers include "partiful", "create partiful event", "publish to partiful", or any Partiful-related task.
+description: Create, update, get, and delete events on Partiful using the `partiful` CLI. Use when user wants to publish, create, update, or delete a Partiful event. Triggers include "partiful", "create partiful event", "publish to partiful", or any Partiful-related task.
 ---
 
 # Partiful Event Manager
 
-Manage JETAASC events on Partiful using the CLI at `clis/partiful.py`.
+Manage JETAASC events on Partiful using the `partiful` CLI.
 
 ## CLI Location
 
-```
-clis/partiful.py
+`partiful` is on PATH via a symlink at `~/.local/bin/partiful` pointing to the
+source at `clis/partiful.py`. Invoke it as `partiful <command>` from any
+directory. Run `partiful --help` or `partiful <command> --help` for options.
+
+If the symlink is missing, recreate it:
+
+```bash
+ln -s "$(pwd)/clis/partiful.py" ~/.local/bin/partiful
 ```
 
 No external dependencies — uses Python stdlib only (`urllib`, `json`, `argparse`).
@@ -25,10 +31,10 @@ Use the two-step non-interactive flow (since `input()` doesn't work in Bash tool
 
 ```bash
 # Step 1: Send SMS code — ask the user for their phone number first
-python3 clis/partiful.py send-code <PHONE_NUMBER>
+partiful send-code <PHONE_NUMBER>
 
 # Step 2: Ask user for the code, then complete login
-python3 clis/partiful.py login <PHONE_NUMBER> --code <CODE>
+partiful login <PHONE_NUMBER> --code <CODE>
 ```
 
 **Important:** You cannot call `login` without `--code` because that triggers interactive `input()`. Always use `send-code` first, ask the user for the code via `AskUserQuestion`, then call `login` with `--code`.
@@ -38,7 +44,7 @@ python3 clis/partiful.py login <PHONE_NUMBER> --code <CODE>
 ### Create Event
 
 ```bash
-python3 clis/partiful.py create \
+partiful create \
   --title "Event Title" \
   --date 2026-03-20 \
   --time 01:00 \
@@ -64,7 +70,7 @@ Returns JSON with `eventId` and `url` (e.g., `https://partiful.com/e/{eventId}`)
 **Shell escaping caveat:** The Bash tool sandbox escapes `!` to `\!` in arguments. To avoid this, wrap text arguments containing `!` in a heredoc:
 
 ```bash
-python3 clis/partiful.py create \
+partiful create \
   --title "$(cat <<'EOF'
 My Event!
 EOF
@@ -83,7 +89,7 @@ Available effects (default `none`): `none`, `balloons`, `basketball`, `beachball
 ### Update Event
 
 ```bash
-python3 clis/partiful.py update <event_id> \
+partiful update <event_id> \
   --title "New Title" \
   --description "New description" \
   --location "New Location" \
@@ -96,7 +102,7 @@ All flags are optional. Only provided fields are updated. Date/time must be prov
 ### Get Event
 
 ```bash
-python3 clis/partiful.py get <event_id>
+partiful get <event_id>
 ```
 
 Returns event fields as JSON.
@@ -104,7 +110,7 @@ Returns event fields as JSON.
 ### Delete Event
 
 ```bash
-python3 clis/partiful.py delete <event_id>
+partiful delete <event_id>
 ```
 
 ## Troubleshooting

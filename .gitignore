@@ -1,6 +1,9 @@
 # MCP config with secrets
 .mcp.json
 
+# Env / bot token
+.env
+
 # Service account keys
 *.json.key
 
@@ -10,3 +13,7 @@ clis/.partiful-auth.json
 # Dependencies and build output
 node_modules/
 dist/
+
+# Python bytecode
+__pycache__/
+*.pyc

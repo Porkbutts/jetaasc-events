@@ -35,13 +35,16 @@ EFFECTS = [
 ]
 FIREBASE_API_KEY = "AIzaSyCky6PJ7cHRdBKk5X7gjuWERWaKWBHr4_k"
 FIRESTORE_BASE = "https://firestore.googleapis.com/v1/projects/getpartiful/databases/(default)/documents"
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), ".partiful-auth.json")
+# Resolve symlinks so the auth file is found next to the real script, not next
+# to a `partiful` symlink sitting on PATH.
+CONFIG_PATH = os.environ.get("PARTIFUL_AUTH") or os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), ".partiful-auth.json")
 
 
 def load_auth():
     if not os.path.exists(CONFIG_PATH):
         print(f"Error: No auth config found at {CONFIG_PATH}", file=sys.stderr)
-        print("Run: python3 clis/partiful.py login <phone_number>", file=sys.stderr)
+        print("Run: partiful login <phone_number>", file=sys.stderr)
         sys.exit(1)
     with open(CONFIG_PATH) as f:
         return json.load(f)
@@ -476,8 +479,12 @@ def cmd_get(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Partiful CLI")
-    sub = parser.add_subparsers(dest="command", required=True)
+    parser = argparse.ArgumentParser(
+        prog="partiful",
+        description="Unofficial CLI for Partiful event management.",
+        epilog="Run 'partiful <command> --help' for command-specific options.",
+    )
+    sub = parser.add_subparsers(dest="command", metavar="<command>", required=True)
 
     # send-code (non-interactive step 1)
     send_p = sub.add_parser("send-code", help="Send SMS code")
