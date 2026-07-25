@@ -1,66 +1,38 @@
-# partiful-cli
+# clis
 
-Unofficial CLI for [Partiful](https://partiful.com) event management. No dependencies beyond Python 3 stdlib.
+Small, self-contained CLIs for JETAASC event publishing. Python 3 stdlib only —
+no dependencies, no virtualenv.
 
-## Auth
+| CLI | Source | Docs | What it does |
+|-----|--------|------|--------------|
+| `partiful` | [partiful.py](partiful.py) | [partiful.md](partiful.md) | Create, update, get, delete Partiful RSVP pages |
+| `dc` | [dc.py](dc.py) | [dc.md](dc.md) | Discord: post/read messages, publish threads, manage scheduled events |
 
-**Interactive** (human in terminal):
+## Install
+
+Both are run by name, from any directory. Symlink them onto your PATH:
+
 ```sh
-python partiful.py login 8185551234
-# Sends SMS, prompts for code, saves auth
+ln -s "$(pwd)/partiful.py" ~/.local/bin/partiful
+ln -s "$(pwd)/dc.py"       ~/.local/bin/dc
+partiful --help
+dc --help
 ```
 
-**Non-interactive** (two steps):
-```sh
-python partiful.py send-code 8185551234
-# wait for SMS...
-python partiful.py login 8185551234 --code 123456
-```
+Each script resolves its own symlink when locating config, so credentials are
+read from this repo no matter which directory you invoke from.
 
-Auth is saved to `.partiful-auth.json` (gitignored). The refresh token auto-renews on each command.
+## Credentials
 
-## Commands
+| CLI | Source | Notes |
+|-----|--------|-------|
+| `partiful` | `clis/.partiful-auth.json` | Gitignored. Created by `partiful login`; refresh token auto-renews per command. Override the path with `$PARTIFUL_AUTH`. |
+| `dc` | `$DISCORD_BOT_TOKEN`, else the first `.env` found in the current dir, `clis/`, or the repo root | Gitignored. Posts as the **JETAASC Assistant** bot. |
 
-### Create event
-```sh
-python partiful.py create \
-  --title "Game Night" \
-  --date 2026-04-01 \
-  --time 03:00 \
-  --description "Bring your own games" \
-  --location "123 Main St" \
-  --theme champagne \
-  --image /path/to/flyer.png
-```
-Times are in UTC. Returns event ID and URL.
+Neither credential is ever committed — see the repo `.gitignore`.
 
-### Update event
-```sh
-python partiful.py update <event_id> \
-  --title "New Title" \
-  --description "Updated description" \
-  --location "New Location" \
-  --date 2026-04-02 --time 04:00 \
-  --image /path/to/flyer.png
-```
+## Used by
 
-### Get event
-```sh
-python partiful.py get <event_id>
-```
-
-### Delete event
-```sh
-python partiful.py delete <event_id>
-```
-
-## How it works
-
-- **Create** uses `POST api.partiful.com/createEvent`
-- **Image upload** uses `POST api.partiful.com/uploadPhoto?uploadType=event_poster` (multipart/form-data)
-- **Update/Delete/Get** use the Firestore REST API directly (`firestore.googleapis.com`)
-- Auth is Firebase (phone + SMS code -> custom token -> JWT + refresh token)
-
-## Phone number format
-
-Accepts `8185551234` (assumes US +1) or `+18185551234`.
+The `jetaasc-event-publisher` skill drives both: `partiful` for the RSVP page,
+`dc` for the Discord scheduled event. See
+`.claude/skills/jetaasc-event-publisher/references/`.
