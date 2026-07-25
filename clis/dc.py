@@ -17,7 +17,7 @@ location tucked into entity_metadata).
   dc channels get     <channel>
   dc channels delete  <channel>          (threads are channels; this removes one)
 
-  dc messages list    <channel> [--before ID] [--after ID] [--limit N] [--all]
+  dc messages list    <channel> [--before ID | --after ID] [--limit N | --all]
   dc messages get     <channel> <message_id>
   dc messages send    <channel> (--text "..." | --text-file PATH) [--reply-to ID]
   dc messages edit    <channel> <message_id> (--text "..." | --text-file PATH)
@@ -135,23 +135,28 @@ def resolve_channel(gid, ref):
 
 
 def list_messages(cid, before, after, limit, all_):
-    """Pages the endpoint. Newest-first, matching the API's own order."""
-    out_, cursor = [], before
+    """Pages the endpoint. Each batch arrives newest-first, matching the API's
+    own order; --after walks forward from its id, otherwise we walk backward."""
+    out_, cursor = [], None
     while True:
-        params = {"limit": 100 if all_ else min(100, limit)}
-        if cursor:
-            params["before"] = cursor
-        elif after:
-            params["after"] = after
+        want = 100 if all_ else min(100, limit - len(out_))
+        params = {"limit": want}
+        if after:
+            params["after"] = cursor or after
+        elif cursor or before:
+            params["before"] = cursor or before
         q = "&".join(f"{k}={v}" for k, v in params.items())
         batch = req("GET", f"/channels/{cid}/messages?{q}")
         if not batch:
             break
         out_.extend(batch)
-        cursor = batch[-1]["id"]
+        # Page from the end we are walking toward: the oldest id of the batch
+        # going backward, the newest going forward. Using the oldest id in both
+        # directions is what made --after silently double back after batch one.
+        cursor = batch[0]["id"] if after else batch[-1]["id"]
         if not all_ and len(out_) >= limit:
             return out_[:limit]
-        if len(batch) < 100:
+        if len(batch) < want:
             break
         time.sleep(0.3)
     return out_
@@ -165,12 +170,19 @@ def text_of(a):
 
 
 def iso(ts, flag):
-    """Discord rejects a non-ISO8601 timestamp with an opaque 400; catch it here."""
+    """Discord rejects a non-ISO8601 timestamp with an opaque 400; catch it here.
+
+    A naive timestamp is rejected too. Discord reads one as UTC, so an event
+    written in local time would land hours off with no error anywhere.
+    """
     try:
-        datetime.fromisoformat(ts)
+        parsed = datetime.fromisoformat(ts)
     except ValueError:
         sys.exit(f"--{flag} must be ISO8601 with a UTC offset, e.g. "
                  f"2026-08-15T18:00:00-07:00 (got {ts!r})")
+    if parsed.tzinfo is None:
+        sys.exit(f"--{flag} has no UTC offset, so Discord would read {ts!r} as "
+                 f"UTC and shift the event. Add one, e.g. {ts}-07:00")
     return ts
 
 
@@ -255,9 +267,14 @@ def build_parser():
     msgs = actions("messages", "Messages")
     m = msgs.add_parser("list", parents=[g], help="GET /channels/{id}/messages")
     m.add_argument("channel")
-    m.add_argument("--before", metavar="ID"); m.add_argument("--after", metavar="ID")
-    m.add_argument("--limit", type=int, default=50)
-    m.add_argument("--all", action="store_true", help="Page it all (ignores --limit)")
+    # Each pair is one choice, not a precedence: before this fix the loser was
+    # accepted and then dropped on the floor.
+    w = m.add_mutually_exclusive_group()
+    w.add_argument("--before", metavar="ID"); w.add_argument("--after", metavar="ID")
+    h = m.add_mutually_exclusive_group()
+    # default stays None so argparse can tell "--limit 50" from an unpassed flag
+    h.add_argument("--limit", type=int, help="[default: 50]")
+    h.add_argument("--all", action="store_true", help="Page the channel out")
     m = msgs.add_parser("get", parents=[g], help="GET /channels/{id}/messages/{id}")
     m.add_argument("channel"); m.add_argument("message_id")
     m = msgs.add_parser("send", parents=[g], help="POST /channels/{id}/messages")
@@ -323,7 +340,10 @@ def main():
     elif key == "channels delete":
         out(req("DELETE", f"/channels/{cid}"))
     elif key == "messages list":
-        out(list_messages(cid, a.before, a.after, a.limit, a.all))
+        if a.limit is not None and a.limit < 1:
+            sys.exit(f"--limit must be at least 1 (got {a.limit})")
+        out(list_messages(cid, a.before, a.after,
+                          50 if a.limit is None else a.limit, a.all))
     elif key == "messages get":
         out(req("GET", f"/channels/{cid}/messages/{mid}"))
     elif key == "messages send":
@@ -353,10 +373,19 @@ def main():
         body.setdefault("privacy_level", 2)
         out(req("POST", EV, body))
     elif key == "events edit":
-        out(req("PATCH", f"{EV}/{eid}", event_body(a, gid)))
+        body = event_body(a, gid)
+        if not body:
+            # An empty PATCH echoes the event back untouched, which reads as a
+            # successful edit. Say nothing changed instead.
+            sys.exit("Nothing to edit. Pass at least one field to change.")
+        out(req("PATCH", f"{EV}/{eid}", body))
     elif key == "events delete":
         req("DELETE", f"{EV}/{eid}")
         out({"deleted": eid})
+    else:
+        # Reachable only by adding a subcommand without a branch here. Without
+        # this the process would exit 0 having printed nothing.
+        sys.exit(f"No handler for '{key}'. This is a bug in dc.")
 
 
 if __name__ == "__main__":
