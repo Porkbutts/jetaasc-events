@@ -42,8 +42,8 @@ The flyer must be a publicly accessible URL for Wix import. Resolve the image ba
 If the user did not provide an RSVP link and one cannot be extracted from the event description or flyer:
 
 Ask the user: "No RSVP link provided. Would you like me to create an RSVP page?"
-- **Partiful** (recommended) — creates a public RSVP page with event details. Read the `partiful` skill (`.claude/skills/partiful/SKILL.md`) for CLI reference and command syntax. Pass the event details you already collected — do not re-ask the user.
-- **Google Form** — use when you need custom fields (e.g., dietary restrictions, T-shirt sizes). Read [references/google-form-rsvp.md](references/google-form-rsvp.md) for the full creation workflow.
+- **Partiful** (recommended) — creates an RSVP page with event details. Read the `partiful` skill (`.claude/skills/partiful/SKILL.md`) for conventions and gotchas, and `partiful create --help` for the command reference. Pass the event details you already collected — do not re-ask the user. Partiful can also ask guests questions at RSVP time (dietary restrictions, sizes, email, social handles), so it covers most cases that used to need a form.
+- **Google Form** — use when the questions outgrow what Partiful collects: long-form answers, per-question branching, or a response sheet someone needs to work in directly. Read [references/google-form-rsvp.md](references/google-form-rsvp.md) for the full creation workflow.
 - **Skip** — no RSVP needed
 
 ### 3. Confirm Details and Select Platforms

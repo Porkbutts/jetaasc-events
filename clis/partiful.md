@@ -1,64 +1,77 @@
 # partiful
 
+An unofficial CLI for Partiful, which has no public API. Each command maps to
+the call the web app makes, and prints JSON. General-purpose: nothing in it is
+specific to JETAASC.
+
+Run `partiful --help` and `partiful <command> --help` for the command reference.
+The subcommand help carries the full flag list plus the parts worth spelling out
+(UTC handling, structured locations, the RSVP question format, non-interactive
+login), so this file sticks to how the thing works underneath.
+
+Python stdlib only, run by name from anywhere via a symlink on `PATH`.
+
 ## Auth
 
-**Interactive** (human in terminal):
-```sh
-partiful login 8185551234
-# Sends SMS, prompts for code, saves auth
-```
+Firebase phone auth: SMS code, exchanged for a custom token, exchanged for a JWT
+plus a refresh token. Only the refresh token and uid are persisted; every command
+trades the refresh token for a fresh JWT and saves the rotated one, so a login
+lasts until the file is lost or the token is revoked.
 
-**Non-interactive** (two steps):
 ```sh
 partiful send-code 8185551234
-# wait for SMS...
 partiful login 8185551234 --code 123456
 ```
 
-Auth is saved to `.partiful-auth.json` (gitignored). The refresh token auto-renews on each command.
+`login` without `--code` prompts on stdin and needs a terminal; with stdin not a
+TTY it exits with the two-step recipe rather than blocking on a prompt that can
+never be answered. Phone numbers take either `8185551234` (assumes US `+1`) or
+`+18185551234`.
 
-## Commands
+Credentials live in `.partiful-auth.json` beside the script (gitignored), or
+wherever `PARTIFUL_AUTH` points. The path is resolved through symlinks, so the
+`~/.local/bin/partiful` symlink finds the file next to the real script.
 
-### Create event
-```sh
-partiful create \
-  --title "Game Night" \
-  --date 2026-04-01 \
-  --time 03:00 \
-  --description "Bring your own games" \
-  --location "123 Main St" \
-  --theme champagne \
-  --image /path/to/flyer.png
-```
-Times are in UTC. Returns event ID and URL.
+Token refresh requires a `Referer: https://partiful.com/` header; without it
+Google returns 403. Already handled, but it is why the header is there.
 
-### Update event
-```sh
-partiful update <event_id> \
-  --title "New Title" \
-  --description "Updated description" \
-  --location "New Location" \
-  --date 2026-04-02 --time 04:00 \
-  --image /path/to/flyer.png
-```
+## Endpoints
 
-### Get event
-```sh
-partiful get <event_id>
-```
+| Command | Call |
+|---------|------|
+| `create` | `POST api.partiful.com/createEvent` |
+| `--image` | `POST api.partiful.com/uploadPhoto?uploadType=event_poster` (multipart), then a Firestore PATCH linking the upload |
+| `update`, `get`, `delete` | Firestore REST directly (`firestore.googleapis.com`, project `getpartiful`) |
 
-### Delete event
-```sh
-partiful delete <event_id>
-```
+`create` posts the event, then PATCHes location, questions, image, and the public
+flag onto the new document — those fields either need Firestore's typed encoding
+or an upload round-trip first, so they don't ride along in the create body.
 
-## How it works
+## Notable behavior
 
-- **Create** uses `POST api.partiful.com/createEvent`
-- **Image upload** uses `POST api.partiful.com/uploadPhoto?uploadType=event_poster` (multipart/form-data)
-- **Update/Delete/Get** use the Firestore REST API directly (`firestore.googleapis.com`)
-- Auth is Firebase (phone + SMS code -> custom token -> JWT + refresh token)
+**Times are absolute.** `--date`/`--time` are UTC and stored as an instant.
+`--timezone` only tells Partiful how to label that instant on the event page; it
+does not shift it.
 
-## Phone number format
+**Locations are built locally.** Given `"Venue, Street, City, ST ZIP"` the CLI
+constructs the `locationInfo` map Partiful needs for a map pin — address lines,
+approximate location, Apple and Google Maps URLs — from the address text alone.
+No geocoding, so no Google API key. Fewer than three comma-separated parts sets
+only the display name, and the page shows "no location set".
 
-Accepts `8185551234` (assumes US +1) or `+18185551234`.
+**Questionnaires are append-only.** `questionnaireEnabled` gates the feature and
+`questionnaireVersions` holds the history; Partiful treats the last entry as live.
+Each guest's response records the *index* of the version it answered, so an update
+appends a version rather than rewriting the array — overwriting in place would
+silently repoint old answers at different questions. `--no-questionnaire` flips
+the flag and touches nothing else.
+
+Question types (`short_answer`, `select`, `email`, `instagram`, `twitter`,
+`tiktok`, `snapchat`, `linkedin`) are Partiful's own enum, read out of the web
+app's JS bundle. A type outside that set will store fine and render wrong.
+
+**`get` is a thin read.** It prints the document's top-level fields, unwrapping
+one layer of Firestore's typed encoding. Nested maps and arrays keep their
+`{"stringValue": ...}` form.
+
+**`delete` is permanent** and takes no confirmation.
