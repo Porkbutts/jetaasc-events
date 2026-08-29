@@ -54,6 +54,8 @@ dc channels delete <channel>         # DELETE /channels/{id}
 dc messages list   <channel> [--before ID] [--after ID] [--limit N] [--all]
 dc messages get    <channel> <message_id>
 dc messages send   <channel> [--text "..." | --text-file PATH] [--reply-to ID]
+                   [--embed-title T] [--embed-description D] [--embed-color C]
+                   [--embed-json J]
                    [--poll-question Q --poll-answer "A[|emoji]" ...
                     [--poll-duration H] [--poll-multiselect] | --poll-json J]
 dc messages edit   <channel> <message_id> (--text "..." | --text-file PATH)
@@ -83,6 +85,15 @@ sends (reactions, mentions, `edited_timestamp`, and the rest), not a subset.
 Pipe to `jq` to narrow it.
 
 ### Notes per resource
+
+**embeds** — the bordered card with a coloured bar, a title, and a markdown
+body. `--embed-color` takes `#5865F2`, bare `5865F2`, or a decimal integer,
+since Discord wants an integer and nobody has one to hand. Title is capped at
+256 and description at 4096, and Discord sums title, description, footer,
+author, and every field name and value across *all* embeds on the message
+against one 6000-character budget, which is checked before sending.
+`--embed-json` takes an embed object or an array of them for the shapes the
+flags do not reach: fields, footer, author, images, thumbnails.
 
 **polls** — a poll is a field on message create, not its own endpoint, so it
 rides on `messages send`; text is optional once a poll is present, and the two

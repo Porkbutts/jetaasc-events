@@ -20,6 +20,8 @@ location tucked into entity_metadata).
   dc messages list    <channel> [--before ID | --after ID] [--limit N | --all]
   dc messages get     <channel> <message_id>
   dc messages send    <channel> [--text "..." | --text-file PATH] [--reply-to ID]
+                      [--embed-title T] [--embed-description D] [--embed-color C]
+                      [--embed-json J]
                       [--poll-question Q --poll-answer "A[|emoji]" ...
                        [--poll-duration H] [--poll-multiselect] | --poll-json J]
   dc messages edit    <channel> <message_id> (--text "..." | --text-file PATH)
@@ -87,6 +89,8 @@ LIMIT = 2000                        # Discord's per-message character cap
 POLL_Q, POLL_A = 300, 55            # poll question / answer character caps
 POLL_ANSWERS = 10                   # answers per poll
 POLL_HOURS = 768                    # poll duration cap, 32 days
+EMBED_T, EMBED_D = 256, 4096        # embed title / description caps
+EMBED_TOTAL = 6000                  # summed text across every embed on a message
 ARCHIVE = (60, 1440, 4320, 10080)   # thread auto-archive minutes Discord accepts
 ENTITY = {"stage": 1, "voice": 2, "external": 3}
 STATUS = {"scheduled": 1, "active": 2, "completed": 3, "canceled": 4}
@@ -303,6 +307,72 @@ def image_data_uri(path):
         return f"data:image/{mime};base64," + base64.b64encode(f.read()).decode()
 
 
+def embed_flags(p):
+    """Embed fields on messages send. --embed-json carries the shapes the
+    convenience flags do not reach (fields, footer, author, images)."""
+    p.add_argument("--embed-title", metavar="TEXT",
+                   help=f"Embed title, {EMBED_T} chars max")
+    p.add_argument("--embed-description", metavar="TEXT",
+                   help=f"Embed body, {EMBED_D} chars max. Markdown renders here")
+    p.add_argument("--embed-color", metavar="COLOR",
+                   help="Left bar colour: #5865F2, 5865F2, or a decimal integer")
+    p.add_argument("--embed-json", metavar="JSON",
+                   help="An embed object, or an array of them, sent as-is")
+
+
+def embed_color(ref):
+    """Discord wants an integer; accept the hex people actually have to hand."""
+    try:
+        return int(ref.lstrip("#"), 16) if not ref.isdigit() else int(ref)
+    except ValueError:
+        sys.exit(f"--embed-color {ref!r} is not a hex colour or an integer.")
+
+
+def embeds_body(a):
+    """The embeds array for Create Message, or None."""
+    if a.embed_json:
+        if a.embed_title or a.embed_description or a.embed_color:
+            sys.exit("Use --embed-json or the other --embed-* flags, not both.")
+        try:
+            parsed = json.loads(a.embed_json)
+        except json.JSONDecodeError as e:
+            sys.exit(f"--embed-json is not valid JSON: {e}")
+        return parsed if isinstance(parsed, list) else [parsed]
+
+    if not (a.embed_title or a.embed_description):
+        if a.embed_color:
+            sys.exit("--embed-color needs --embed-title or --embed-description.")
+        return None
+    if a.embed_title and len(a.embed_title) > EMBED_T:
+        sys.exit(f"Embed title is {len(a.embed_title)} chars, over Discord's "
+                 f"{EMBED_T} cap.")
+    if a.embed_description and len(a.embed_description) > EMBED_D:
+        sys.exit(f"Embed description is {len(a.embed_description)} chars, over "
+                 f"Discord's {EMBED_D} cap.")
+
+    embed = {}
+    if a.embed_title:
+        embed["title"] = a.embed_title
+    if a.embed_description:
+        embed["description"] = a.embed_description
+    if a.embed_color:
+        embed["color"] = embed_color(a.embed_color)
+    return [embed]
+
+
+def embeds_length(embeds):
+    """Discord sums the text of every embed against one 6000-char budget."""
+    total = 0
+    for e in embeds:
+        for k in ("title", "description"):
+            total += len(e.get(k) or "")
+        total += len((e.get("footer") or {}).get("text") or "")
+        total += len((e.get("author") or {}).get("name") or "")
+        for f in e.get("fields") or []:
+            total += len(f.get("name") or "") + len(f.get("value") or "")
+    return total
+
+
 def poll_flags(p):
     """Poll fields on messages send. Discord has no endpoint for editing a poll,
     so these exist on send only."""
@@ -410,6 +480,7 @@ def build_parser():
     s.add_argument("--text"); s.add_argument("--text-file", metavar="PATH",
                                              help="Read the message text from a file")
     m.add_argument("--reply-to", metavar="ID")
+    embed_flags(m)
     poll_flags(m)
     m = msgs.add_parser("edit", parents=[g], help="PATCH /channels/{id}/messages/{id}")
     m.add_argument("channel"); m.add_argument("message_id")
@@ -505,11 +576,19 @@ def main():
         body = {}
         if a.text is not None or a.text_file:
             body["content"] = text_of(a)
+        embeds = embeds_body(a)
+        if embeds:
+            over = embeds_length(embeds)
+            if over > EMBED_TOTAL:
+                sys.exit(f"Embed text totals {over} chars, over Discord's "
+                         f"{EMBED_TOTAL} cap across all embeds on a message.")
+            body["embeds"] = embeds
         poll = poll_body(a, gid)
         if poll:
             body["poll"] = poll
         if not body:
-            sys.exit("Nothing to send. Pass --text/--text-file, poll flags, or both.")
+            sys.exit("Nothing to send. Pass --text/--text-file, embed or poll "
+                     "flags, or a combination.")
         if a.reply_to:
             body["message_reference"] = {"message_id": a.reply_to}
         out(req("POST", f"/channels/{cid}/messages", body))
