@@ -25,8 +25,10 @@ Gather from user:
 The flyer must be a publicly accessible URL for Wix import. Resolve the image based on what the user provides:
 
 1. **Local file path** (e.g., `~/Downloads/flyer.png`):
-   - Upload to Google Drive `Public Flyers` folder (ID: `1ptC7GpyjuHmwhTTAed1Y7GmuLGY1b-XR`) using the `/gws-drive-upload` skill
-   - The folder has public "anyone with link" view permissions, so the file inherits it
+   - Upload to Google Drive `Public Flyers` folder (ID: `1C7glPr2Oaw-h8sdFDAIu2vbPt_MT6yJu`) in the Officers Shared Drive, using the `/gws-drive-upload` skill
+   - `gws drive +upload --parent` 404s on shared drive folders (the helper omits `supportsAllDrives`), so upload to My Drive first, then move the file in
+   - Moving a file into a shared drive silently strips `anyone:reader` — re-add it explicitly after the move, or Wix and Discord imports will fail:
+     `gws drive permissions create --params '{"fileId":"FILE_ID","supportsAllDrives":true}' --json '{"type":"anyone","role":"reader"}'`
    - Convert the returned file ID to a direct image URL: `https://lh3.googleusercontent.com/d/FILE_ID`
    - The `uc?export=download` format redirects through an HTML page and may fail for server-side imports (e.g., Wix)
    - For Discord and Facebook, use the original local file path directly (both take local paths)
