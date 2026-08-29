@@ -37,6 +37,11 @@ dc messages send   <channel> (--text "..." | --text-file PATH) [--reply-to ID]
 dc messages edit   <channel> <message_id> (--text "..." | --text-file PATH)
 dc messages delete <channel> <message_id>
 
+dc reactions add    <channel> <message_id> <emoji>
+dc reactions remove <channel> <message_id> <emoji> [--user ID]
+dc reactions list   <channel> <message_id> <emoji> [--limit N]
+dc reactions clear  <channel> <message_id> [<emoji>]
+
 dc threads create  <channel> --name NAME [--message ID] [--archive MIN]
 
 dc events list
@@ -53,6 +58,16 @@ sends (reactions, mentions, `edited_timestamp`, and the rest), not a subset.
 Pipe to `jq` to narrow it.
 
 ### Notes per resource
+
+**reactions** — `<emoji>` takes a standard emoji character, or for a custom one
+its `<:name:id>` form, a bare `name:id`, or just a name, which is looked up in
+the guild's emoji the way a channel fragment is. `remove` takes the bot's own
+reaction off by default; `--user ID` removes someone else's and needs Manage
+Messages. `clear` removes *everyone's*, either for one emoji or, with the emoji
+omitted, all of them — it is not undoable and there is no confirmation. `list`
+returns the users who reacted with one emoji, capped at Discord's 100 per
+request with no paging; for counts across every emoji read the `reactions` array
+from `messages get` instead.
 
 **messages** — `--text-file` reads the message *text* from a file; it does not
 upload an attachment (there is no multipart support yet). Bodies over Discord's

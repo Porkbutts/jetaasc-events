@@ -23,6 +23,11 @@ location tucked into entity_metadata).
   dc messages edit    <channel> <message_id> (--text "..." | --text-file PATH)
   dc messages delete  <channel> <message_id>
 
+  dc reactions add    <channel> <message_id> <emoji>
+  dc reactions remove <channel> <message_id> <emoji> [--user ID]
+  dc reactions list   <channel> <message_id> <emoji> [--limit N]
+  dc reactions clear  <channel> <message_id> [<emoji>]
+
   dc threads create   <channel> --name NAME [--message ID] [--archive MIN]
 
   dc events list
@@ -38,6 +43,9 @@ Both --guild and <channel> accept an id or a case-insensitive name fragment;
 emoji and punctuation are ignored, so "server-admins" matches "🔨server-admins".
 An id is used as-is, so only name fragments cost a lookup request.
 
+<emoji> takes a standard emoji character, or for a custom one either its
+<:name:id> form or a bare name, which is looked up in the guild's emoji.
+
 Config is read from the environment, else the first .env containing the key,
 searched in: the current dir, this script's dir, then its parent.
 """
@@ -49,6 +57,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime
 
@@ -83,6 +92,10 @@ TOK = None  # filled in main so --help never needs a token
 
 def req(method, path, payload=None):
     data = json.dumps(payload).encode() if payload is not None else None
+    # Adding a reaction is a bodyless PUT, and urllib sends no Content-Length
+    # when data is None, which Discord answers with a 411.
+    if data is None and method == "PUT":
+        data = b""
     r = urllib.request.Request(
         f"{API}{path}", data=data, method=method,
         headers={"Authorization": f"Bot {TOK}", "User-Agent": UA,
@@ -109,9 +122,10 @@ def _norm(s):
 
 
 def _pick(ref, items, what):
+    """The matched item, not its id: a custom emoji is addressed by name:id."""
     hits = [i for i in items if _norm(ref) in _norm(i["name"])]
     if len(hits) == 1:
-        return hits[0]["id"]
+        return hits[0]
     listing = ", ".join(f'{i["name"]} ({i["id"]})' for i in items)
     if not hits:
         sys.exit(f"No {what} matches '{ref}'. Have: {listing}")
@@ -125,13 +139,33 @@ def resolve_guild(ref):
         sys.exit("No guild. Set $DISCORD_GUILD_ID or pass --guild.")
     if ref.isdigit():
         return ref
-    return _pick(ref, req("GET", "/users/@me/guilds"), "guild")
+    return _pick(ref, req("GET", "/users/@me/guilds"), "guild")["id"]
 
 
 def resolve_channel(gid, ref):
     if ref.isdigit():
         return ref
-    return _pick(ref, req("GET", f"/guilds/{gid}/channels"), "channel")
+    return _pick(ref, req("GET", f"/guilds/{gid}/channels"), "channel")["id"]
+
+
+def resolve_emoji(gid, ref):
+    """The path segment Discord wants: the raw character for a standard emoji,
+    name:id for a custom one. Both are percent-encoded by the caller.
+
+    A :shortcode: is not something the API accepts, and a standard emoji cannot
+    be looked up by name, so a bare ascii name is taken to mean a custom emoji
+    and resolved against the guild's set the way channels are.
+    """
+    ref = ref.strip()
+    mention = re.fullmatch(r"<a?:([^:]+):(\d+)>", ref)   # <:name:id>, <a:name:id>
+    if mention:
+        return f"{mention.group(1)}:{mention.group(2)}"
+    if re.fullmatch(r"[^:]+:\d+", ref):                  # already name:id
+        return ref
+    if not ref.isascii():                                # standard emoji
+        return ref
+    emoji = _pick(ref.strip(":"), req("GET", f"/guilds/{gid}/emojis"), "emoji")
+    return f'{emoji["name"]}:{emoji["id"]}'
 
 
 def list_messages(cid, before, after, limit, all_):
@@ -290,6 +324,21 @@ def build_parser():
     m = msgs.add_parser("delete", parents=[g], help="DELETE /channels/{id}/messages/{id}")
     m.add_argument("channel"); m.add_argument("message_id")
 
+    rx = actions("reactions", "Reactions")
+    RX = "/channels/{id}/messages/{id}/reactions"
+    r = rx.add_parser("add", parents=[g], help=f"PUT {RX}/{{emoji}}/@me")
+    r.add_argument("channel"); r.add_argument("message_id"); r.add_argument("emoji")
+    r = rx.add_parser("remove", parents=[g], help=f"DELETE {RX}/{{emoji}}/{{user|@me}}")
+    r.add_argument("channel"); r.add_argument("message_id"); r.add_argument("emoji")
+    r.add_argument("--user", metavar="ID",
+                   help="Whose reaction to remove [default: the bot's own]")
+    r = rx.add_parser("list", parents=[g], help=f"GET {RX}/{{emoji}}")
+    r.add_argument("channel"); r.add_argument("message_id"); r.add_argument("emoji")
+    r.add_argument("--limit", type=int, default=100, help="Users to return [default: 100]")
+    r = rx.add_parser("clear", parents=[g], help=f"DELETE {RX}[/{{emoji}}]")
+    r.add_argument("channel"); r.add_argument("message_id")
+    r.add_argument("emoji", nargs="?", help="Omit to clear every reaction")
+
     th = actions("threads", "Threads")
     t = th.add_parser("create", parents=[g], help="POST /channels/{id}[/messages/{id}]/threads")
     t.add_argument("channel"); t.add_argument("--name", required=True)
@@ -356,6 +405,23 @@ def main():
     elif key == "messages delete":
         req("DELETE", f"/channels/{cid}/messages/{mid}")
         out({"deleted": mid})
+    elif a.res == "reactions":
+        base = f"/channels/{cid}/messages/{mid}/reactions"
+        # quote(safe="") so a custom emoji's colon and a standard one's bytes
+        # both survive as one path segment.
+        emoji = (urllib.parse.quote(resolve_emoji(gid, a.emoji), safe="")
+                 if getattr(a, "emoji", None) else None)
+        if a.act == "add":
+            req("PUT", f"{base}/{emoji}/@me")
+            out({"reacted": a.emoji, "message": mid})
+        elif a.act == "remove":
+            req("DELETE", f"{base}/{emoji}/{a.user or '@me'}")
+            out({"unreacted": a.emoji, "message": mid, "user": a.user or "@me"})
+        elif a.act == "list":
+            out(req("GET", f"{base}/{emoji}?limit={a.limit}"))
+        else:
+            req("DELETE", f"{base}/{emoji}" if emoji else base)
+            out({"cleared": a.emoji or "all", "message": mid})
     elif key == "threads create":
         path = (f"/channels/{cid}/messages/{a.message}/threads" if a.message
                 else f"/channels/{cid}/threads")
