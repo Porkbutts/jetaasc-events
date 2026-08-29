@@ -48,6 +48,12 @@ An id is used as-is, so only name fragments cost a lookup request.
 
 Config is read from the environment, else the first .env containing the key,
 searched in: the current dir, this script's dir, then its parent.
+
+  DISCORD_BOT_TOKEN   required
+  DISCORD_GUILD_ID    default guild, overridable per command with --guild
+  DISCORD_USER_AGENT  optional, defaults to "DiscordBot (dc, 1.0)". Anything
+                      but urllib's own UA gets through, but Discord asks bots
+                      to send "DiscordBot ($url, $version)".
 """
 import argparse
 import base64
@@ -62,8 +68,12 @@ import urllib.request
 from datetime import datetime
 
 API = "https://discord.com/api/v10"
-# Discord's Cloudflare edge 403s (error 1010) any request without a DiscordBot UA.
-UA = "DiscordBot (https://jetaasc.org, 1.0)"
+# Discord's Cloudflare edge 403s (error 1010) urllib's default UA, so sending
+# one is not optional. Anything else is let through, but Discord's docs ask bots
+# for "DiscordBot ($url, $version)", so that is the shape of the default.
+# Set $DISCORD_USER_AGENT to identify your own bot.
+DEFAULT_UA = "DiscordBot (dc, 1.0)"
+UA = DEFAULT_UA  # main replaces this from $DISCORD_USER_AGENT if one is set
 # realpath, not abspath: this script is invoked through a symlink on PATH, and
 # abspath would resolve HERE to the symlink's dir instead of the real one.
 HERE = os.path.dirname(os.path.realpath(__file__))
@@ -362,8 +372,9 @@ def build_parser():
 
 
 def main():
-    global TOK
+    global TOK, UA
     a = build_parser().parse_args()
+    UA = config("DISCORD_USER_AGENT") or DEFAULT_UA
     TOK = config("DISCORD_BOT_TOKEN")
     if not TOK:
         sys.exit("No token. Set $DISCORD_BOT_TOKEN or put DISCORD_BOT_TOKEN=... in a .env")

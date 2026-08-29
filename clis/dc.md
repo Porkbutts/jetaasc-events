@@ -5,9 +5,29 @@ endpoint, passes through the flags you give it, and prints the API's JSON
 response verbatim. No workflows, no file conventions, no opinions about content.
 
 What it does handle is the plumbing every caller would otherwise redo: the
-token, the Cloudflare user-agent that Discord's edge requires, pagination,
-rate-limit backoff, and the encodings Discord demands (base64 data-URI cover
-images, `location` nested inside `entity_metadata`).
+token, a user-agent Discord's edge will accept, pagination, rate-limit backoff,
+and the encodings Discord demands (base64 data-URI cover images, `location`
+nested inside `entity_metadata`).
+
+## Config
+
+Read from the environment, else the first `.env` defining the key, searched in
+the current dir, then this script's dir, then its parent.
+
+| Key | |
+|-----|---|
+| `DISCORD_BOT_TOKEN` | Required. Commands exit rather than guess. |
+| `DISCORD_GUILD_ID` | Default guild; `--guild` overrides it per command. |
+| `DISCORD_USER_AGENT` | Optional, defaults to `DiscordBot (dc, 1.0)`. |
+
+Nothing else is configured and nothing is hardcoded, so a different bot in a
+different server needs only a different `.env`.
+
+The user-agent is worth a note: Discord's Cloudflare edge 403s (error 1010)
+urllib's default UA, so *something* must be sent. Anything else gets through,
+but Discord's docs ask bots to identify themselves as
+`DiscordBot ($url, $version)` — set `DISCORD_USER_AGENT` to your own project's
+URL and version rather than shipping as a generic `dc`.
 
 ## Addressing
 
