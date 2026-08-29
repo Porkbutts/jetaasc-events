@@ -53,9 +53,14 @@ dc channels delete <channel>         # DELETE /channels/{id}
 
 dc messages list   <channel> [--before ID] [--after ID] [--limit N] [--all]
 dc messages get    <channel> <message_id>
-dc messages send   <channel> (--text "..." | --text-file PATH) [--reply-to ID]
+dc messages send   <channel> [--text "..." | --text-file PATH] [--reply-to ID]
+                   [--poll-question Q --poll-answer "A[|emoji]" ...
+                    [--poll-duration H] [--poll-multiselect] | --poll-json J]
 dc messages edit   <channel> <message_id> (--text "..." | --text-file PATH)
 dc messages delete <channel> <message_id>
+
+dc polls voters     <channel> <message_id> <answer_id> [--limit N] [--after ID]
+dc polls expire     <channel> <message_id>
 
 dc reactions add    <channel> <message_id> <emoji>
 dc reactions remove <channel> <message_id> <emoji> [--user ID]
@@ -78,6 +83,21 @@ sends (reactions, mentions, `edited_timestamp`, and the rest), not a subset.
 Pipe to `jq` to narrow it.
 
 ### Notes per resource
+
+**polls** — a poll is a field on message create, not its own endpoint, so it
+rides on `messages send`; text is optional once a poll is present, and the two
+can be sent together. Discord caps the question at 300 characters, each answer
+at 55, answers at 10, and the duration at 768 hours (32 days), all checked
+before the request goes out. `--poll-answer "Text|emoji"` takes the same emoji
+forms as a reaction, though a poll wants a partial emoji object rather than a
+path segment, so the resolved emoji becomes `{"id": ...}` or `{"name": ...}`.
+`--poll-json` sends a poll object straight through instead.
+
+Answers are numbered from 1 in the order sent, and that is the `answer_id`
+`polls voters` takes. Note it returns `{"users": [...]}`, an object, where
+`reactions list` returns a bare array. There is no endpoint for editing a poll,
+so a typo means deleting the message and re-sending. `polls expire` ends one
+early and returns the message.
 
 **reactions** — `<emoji>` takes a standard emoji character, or for a custom one
 its `<:name:id>` form, a bare `name:id`, or just a name, which is looked up in

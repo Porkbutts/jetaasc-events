@@ -19,7 +19,9 @@ location tucked into entity_metadata).
 
   dc messages list    <channel> [--before ID | --after ID] [--limit N | --all]
   dc messages get     <channel> <message_id>
-  dc messages send    <channel> (--text "..." | --text-file PATH) [--reply-to ID]
+  dc messages send    <channel> [--text "..." | --text-file PATH] [--reply-to ID]
+                      [--poll-question Q --poll-answer "A[|emoji]" ...
+                       [--poll-duration H] [--poll-multiselect] | --poll-json J]
   dc messages edit    <channel> <message_id> (--text "..." | --text-file PATH)
   dc messages delete  <channel> <message_id>
 
@@ -27,6 +29,9 @@ location tucked into entity_metadata).
   dc reactions remove <channel> <message_id> <emoji> [--user ID]
   dc reactions list   <channel> <message_id> <emoji> [--limit N]
   dc reactions clear  <channel> <message_id> [<emoji>]
+
+  dc polls voters     <channel> <message_id> <answer_id> [--limit N] [--after ID]
+  dc polls expire     <channel> <message_id>
 
   dc threads create   <channel> --name NAME [--message ID] [--archive MIN]
 
@@ -79,6 +84,9 @@ UA = DEFAULT_UA  # main replaces this from $DISCORD_USER_AGENT if one is set
 HERE = os.path.dirname(os.path.realpath(__file__))
 ROOT = os.path.dirname(HERE)
 LIMIT = 2000                        # Discord's per-message character cap
+POLL_Q, POLL_A = 300, 55            # poll question / answer character caps
+POLL_ANSWERS = 10                   # answers per poll
+POLL_HOURS = 768                    # poll duration cap, 32 days
 ARCHIVE = (60, 1440, 4320, 10080)   # thread auto-archive minutes Discord accepts
 ENTITY = {"stage": 1, "voice": 2, "external": 3}
 STATUS = {"scheduled": 1, "active": 2, "completed": 3, "canceled": 4}
@@ -178,6 +186,63 @@ def resolve_emoji(gid, ref):
     return f'{emoji["name"]}:{emoji["id"]}'
 
 
+def emoji_object(gid, ref):
+    """The partial emoji a poll answer takes: an id for a custom emoji, a name
+    for a standard one. Not the name:id path segment reactions use."""
+    resolved = resolve_emoji(gid, ref)
+    return ({"id": resolved.split(":")[-1]} if ":" in resolved
+            else {"name": resolved})
+
+
+def poll_body(a, gid):
+    """The poll object for Create Message, or None if no poll flags were given.
+
+    Discord validates the combination; the checks here are the ones it answers
+    with an opaque 400, or silently truncates.
+    """
+    if a.poll_json:
+        if a.poll_question or a.poll_answer:
+            sys.exit("Use --poll-json or the --poll-* flags, not both.")
+        try:
+            return json.loads(a.poll_json)
+        except json.JSONDecodeError as e:
+            sys.exit(f"--poll-json is not valid JSON: {e}")
+    if not (a.poll_question or a.poll_answer):
+        return None
+    if not (a.poll_question and a.poll_answer):
+        sys.exit("A poll needs --poll-question and at least one --poll-answer.")
+    if len(a.poll_question) > POLL_Q:
+        sys.exit(f"Question is {len(a.poll_question)} chars, over Discord's "
+                 f"{POLL_Q} cap.")
+    if len(a.poll_answer) > POLL_ANSWERS:
+        sys.exit(f"{len(a.poll_answer)} answers, over Discord's cap of "
+                 f"{POLL_ANSWERS}.")
+    if a.poll_duration is not None and not 1 <= a.poll_duration <= POLL_HOURS:
+        sys.exit(f"--poll-duration must be 1-{POLL_HOURS} hours (32 days), got "
+                 f"{a.poll_duration}.")
+
+    answers = []
+    for spec in a.poll_answer:
+        text, _, emoji = spec.partition("|")
+        text = text.strip()
+        if not text:
+            sys.exit(f"Answer {spec!r} has no text.")
+        if len(text) > POLL_A:
+            sys.exit(f"Answer {text!r} is {len(text)} chars, over Discord's "
+                     f"{POLL_A} cap.")
+        media = {"text": text}
+        if emoji.strip():
+            media["emoji"] = emoji_object(gid, emoji.strip())
+        answers.append({"poll_media": media})
+
+    poll = {"question": {"text": a.poll_question}, "answers": answers}
+    if a.poll_duration is not None:
+        poll["duration"] = a.poll_duration
+    if a.poll_multiselect:
+        poll["allow_multiselect"] = True
+    return poll
+
+
 def list_messages(cid, before, after, limit, all_):
     """Pages the endpoint. Each batch arrives newest-first, matching the API's
     own order; --after walks forward from its id, otherwise we walk backward."""
@@ -236,6 +301,23 @@ def image_data_uri(path):
     mime = {"jpg": "jpeg", "jpe": "jpeg"}.get(ext, ext)
     with open(path, "rb") as f:
         return f"data:image/{mime};base64," + base64.b64encode(f.read()).decode()
+
+
+def poll_flags(p):
+    """Poll fields on messages send. Discord has no endpoint for editing a poll,
+    so these exist on send only."""
+    p.add_argument("--poll-question", metavar="TEXT",
+                   help=f"Poll question, {POLL_Q} chars max")
+    p.add_argument("--poll-answer", action="append", metavar="TEXT[|EMOJI]",
+                   help=f"An answer, {POLL_A} chars max. Repeatable, up to "
+                        f"{POLL_ANSWERS}. An emoji after | takes the same forms "
+                        f"as a reaction's")
+    p.add_argument("--poll-duration", type=int, metavar="HOURS",
+                   help=f"1-{POLL_HOURS} (32 days) [default: Discord's 24]")
+    p.add_argument("--poll-multiselect", action="store_true",
+                   help="Let voters pick more than one answer")
+    p.add_argument("--poll-json", metavar="JSON",
+                   help="The whole poll object as JSON, instead of the flags above")
 
 
 def event_body(a, gid):
@@ -323,10 +405,12 @@ def build_parser():
     m.add_argument("channel"); m.add_argument("message_id")
     m = msgs.add_parser("send", parents=[g], help="POST /channels/{id}/messages")
     m.add_argument("channel")
-    s = m.add_mutually_exclusive_group(required=True)
+    # Not required=True any more: a message may be text, a poll, or both.
+    s = m.add_mutually_exclusive_group()
     s.add_argument("--text"); s.add_argument("--text-file", metavar="PATH",
                                              help="Read the message text from a file")
     m.add_argument("--reply-to", metavar="ID")
+    poll_flags(m)
     m = msgs.add_parser("edit", parents=[g], help="PATCH /channels/{id}/messages/{id}")
     m.add_argument("channel"); m.add_argument("message_id")
     s = m.add_mutually_exclusive_group(required=True)
@@ -348,6 +432,17 @@ def build_parser():
     r = rx.add_parser("clear", parents=[g], help=f"DELETE {RX}[/{{emoji}}]")
     r.add_argument("channel"); r.add_argument("message_id")
     r.add_argument("emoji", nargs="?", help="Omit to clear every reaction")
+
+    po = actions("polls", "Polls")
+    PO = "/channels/{id}/polls/{message_id}"
+    o = po.add_parser("voters", parents=[g],
+                      help=f"GET {PO}/answers/{{answer_id}}")
+    o.add_argument("channel"); o.add_argument("message_id")
+    o.add_argument("answer_id", help="1-based, in the order the answers were sent")
+    o.add_argument("--limit", type=int, help="Users to return, 1-100 [default: 25]")
+    o.add_argument("--after", metavar="ID", help="Page from this user id")
+    o = po.add_parser("expire", parents=[g], help=f"POST {PO}/expire")
+    o.add_argument("channel"); o.add_argument("message_id")
 
     th = actions("threads", "Threads")
     t = th.add_parser("create", parents=[g], help="POST /channels/{id}[/messages/{id}]/threads")
@@ -407,7 +502,14 @@ def main():
     elif key == "messages get":
         out(req("GET", f"/channels/{cid}/messages/{mid}"))
     elif key == "messages send":
-        body = {"content": text_of(a)}
+        body = {}
+        if a.text is not None or a.text_file:
+            body["content"] = text_of(a)
+        poll = poll_body(a, gid)
+        if poll:
+            body["poll"] = poll
+        if not body:
+            sys.exit("Nothing to send. Pass --text/--text-file, poll flags, or both.")
         if a.reply_to:
             body["message_reference"] = {"message_id": a.reply_to}
         out(req("POST", f"/channels/{cid}/messages", body))
@@ -433,6 +535,16 @@ def main():
         else:
             req("DELETE", f"{base}/{emoji}" if emoji else base)
             out({"cleared": a.emoji or "all", "message": mid})
+    elif a.res == "polls":
+        base = f"/channels/{cid}/polls/{mid}"
+        if a.act == "voters":
+            q = [] if a.limit is None else [f"limit={a.limit}"]
+            if a.after:
+                q.append(f"after={a.after}")
+            qs = f"?{'&'.join(q)}" if q else ""
+            out(req("GET", f"{base}/answers/{a.answer_id}{qs}"))
+        else:
+            out(req("POST", f"{base}/expire"))
     elif key == "threads create":
         path = (f"/channels/{cid}/messages/{a.message}/threads" if a.message
                 else f"/channels/{cid}/threads")
