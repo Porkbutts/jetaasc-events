@@ -24,11 +24,12 @@ Gather from user:
 
 The flyer must be a publicly accessible URL for Wix import. Resolve the image based on what the user provides:
 
+Storage, naming, permissions, URL forms, and the Drive gotchas are in
+[../../references/public-flyers.md](../../references/public-flyers.md). Read it before uploading — the upload and permission steps have non-obvious failure modes that fail silently.
+
 1. **Local file path** (e.g., `~/Downloads/flyer.png`):
-   - Upload to Google Drive `Public Flyers` folder (ID: `1ptC7GpyjuHmwhTTAed1Y7GmuLGY1b-XR`) using the `/gws-drive-upload` skill
-   - The folder has public "anyone with link" view permissions, so the file inherits it
-   - Convert the returned file ID to a direct image URL: `https://lh3.googleusercontent.com/d/FILE_ID`
-   - The `uc?export=download` format redirects through an HTML page and may fail for server-side imports (e.g., Wix)
+   - Upload to the `Public Flyers` folder per the reference above, and confirm `anyone:reader` afterward
+   - Use `https://lh3.googleusercontent.com/d/FILE_ID` for Wix
    - For Discord and Facebook, use the original local file path directly (both take local paths)
 
 2. **Google Drive share link** (e.g., `https://drive.google.com/file/d/FILE_ID/view`):

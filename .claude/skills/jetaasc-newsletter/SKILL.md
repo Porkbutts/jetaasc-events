@@ -1,9 +1,10 @@
 ---
 name: jetaasc-newsletter
 description: |
-  Create JETAASC (JET Alumni Association of Southern California) monthly newsletter campaigns in Mailchimp.
-  Use when user wants to create a newsletter, draft a newsletter, send a monthly update, or mentions JETAASC newsletter.
-  Triggers: "create newsletter", "draft newsletter", "monthly newsletter", "send newsletter", "JETAASC update".
+  Build and send the JETAASC (JET Alumni Association of Southern California) monthly newsletter campaign in Mailchimp.
+  Use when the user is ready to build the actual email: "build the newsletter", "make the newsletter from this doc",
+  "create the campaign", "send the newsletter", "send a test".
+  To collect or edit content in the monthly Google Doc first, use jetaasc-newsletter-draft instead.
 ---
 
 # JETAASC Newsletter Skill
@@ -24,7 +25,12 @@ Create monthly newsletter campaigns for JETAASC using Mailchimp.
 
 ### 1. Gather Content
 
-Ask the user for content for each section:
+Content usually comes from the monthly Google Doc, which is owned by the
+`jetaasc-newsletter-draft` skill. If the user points at one, read it per
+**Reading a doc** below. Short issues are often dictated straight into the
+terminal instead — don't require a doc.
+
+Otherwise ask the user for content for each section:
 
 ```
 I'll help create the JETAASC newsletter. I need content for:
@@ -43,9 +49,25 @@ Also needed:
 - Preview text (short teaser, ~50 chars)
 ```
 
-### 2. Process Images
+### 2. Reading a doc
 
-When the user provides local image paths or URLs:
+`docs.documents.get` silently drops embedded images — it returns them as
+`inlineObject` references with a `contentUri` that can't be fetched. Export the
+doc as a zip instead, which returns the HTML plus the real image bytes with each
+image's position preserved:
+
+```bash
+gws drive files export --params '{"fileId":"DOC_ID","mimeType":"application/zip"}' -o doc.zip
+unzip -q doc.zip -d doc/
+```
+
+The banner is the image above the first `<h1>`; a flyer is the image inside an
+event's block. Flag any section still empty or marked `[PLACEHOLDER: ...]` before
+building, rather than shipping it.
+
+### 3. Process Images
+
+When you have image files (from a doc export, a local path, or a URL):
 
 1. **Check file size** - Mailchimp limit is 1MB
 2. **Compress if needed** (if >1MB) using sips or ImageMagick:
@@ -60,7 +82,7 @@ When the user provides local image paths or URLs:
 
 > **Note:** Always download and re-upload images rather than hotlinking external URLs.
 
-### 3. Draft Content in Markdown
+### 4. Draft Content in Markdown
 
 Before building, draft the full newsletter content in markdown and present it to the user for review. This includes the rewritten/polished text for every section — not just a summary of what's included. The user must approve the actual content before the HTML is built.
 
@@ -82,7 +104,7 @@ Does this look right, or would you like any changes?
 
 Only proceed to the build step after the user approves.
 
-### 4. Build and Publish via Subagent
+### 5. Build and Publish via Subagent
 
 Launch the `newsletter-builder` agent (subagent_type: "general-purpose") with structured content.
 
@@ -121,7 +143,7 @@ Sections:
 
 The agent reads the HTML template, interpolates content, and calls Mailchimp APIs. It returns the campaign ID and archive URL.
 
-### 5. Share Preview
+### 6. Share Preview
 
 After the agent returns, share the archive URL so the user can preview:
 
