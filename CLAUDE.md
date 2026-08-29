@@ -49,6 +49,17 @@ gws gmail users drafts create --params '{"userId":"me"}' --json "$(cat draft.jso
 
 Use `gws schema <api>.<resource>.<method>` to see which parameters exist and whether each is `path`, `query`, or body.
 
+## Discord
+
+Use the `dc` CLI; run `dc --help` and `dc <resource> <action> --help` for the
+command reference, and see [clis/dc.md](clis/dc.md) for how it maps to the API.
+
+**Test in `#server-admins`.** Nobody else can see that channel, so trial posts,
+polls, and reactions belong there rather than in a community channel. Clean up
+after yourself: `dc messages delete server-admins <message_id>`. Never test in a
+channel members can read, and never react to or reply to a real member's message
+without being asked to.
+
 ## Mailchimp
 
 ### Finding recent campaigns (newsletters)
