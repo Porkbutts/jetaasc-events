@@ -3,120 +3,118 @@ name: partiful
 description: Create, update, get, and delete events on Partiful using the `partiful` CLI. Use when user wants to publish, create, update, or delete a Partiful event. Triggers include "partiful", "create partiful event", "publish to partiful", or any Partiful-related task.
 ---
 
-# Partiful Event Manager
+# Partiful
 
-Manage JETAASC events on Partiful using the `partiful` CLI.
+`partiful` is a general-purpose CLI and documents itself. **Get the command
+reference from the CLI, not from this file:**
 
-## CLI Location
+```bash
+partiful --help
+partiful create --help      # also: UTC handling, structured locations, RSVP questions
+partiful update --help      # also: how question sets are versioned
+partiful login --help       # also: the non-interactive login flow
+```
 
-`partiful` is on PATH via a symlink at `~/.local/bin/partiful` pointing to the
-source at `clis/partiful.py`. Invoke it as `partiful <command>` from any
-directory. Run `partiful --help` or `partiful <command> --help` for options.
+Every flag, every theme and effect name, and every RSVP question attribute is in
+there, and it cannot drift out of date the way a copy here would. Don't guess at
+arguments — read the help for the subcommand you're about to run.
 
-If the symlink is missing, recreate it:
+This skill covers only the things `--help` can't know: this environment, and how
+JETAASC uses the tool.
+
+## Setup
+
+`partiful` is on PATH via a symlink at `~/.local/bin/partiful` pointing at
+`clis/partiful.py` in this repo. Recreate it if it goes missing:
 
 ```bash
 ln -s "$(pwd)/clis/partiful.py" ~/.local/bin/partiful
 ```
 
-No external dependencies — uses Python stdlib only (`urllib`, `json`, `argparse`).
+Auth lives in `clis/.partiful-auth.json` (gitignored). The refresh token renews
+on every command, so once logged in it stays working. Python stdlib only, no
+install step.
 
-## Authentication
+## Gotchas in this environment
 
-Auth tokens are stored at `clis/.partiful-auth.json` (gitignored). If the file exists and the refresh token is valid, all commands work automatically.
-
-### If auth is expired or missing
-
-Use the two-step non-interactive flow (since `input()` doesn't work in Bash tool):
-
-```bash
-# Step 1: Send SMS code — ask the user for their phone number first
-partiful send-code <PHONE_NUMBER>
-
-# Step 2: Ask user for the code, then complete login
-partiful login <PHONE_NUMBER> --code <CODE>
-```
-
-**Important:** You cannot call `login` without `--code` because that triggers interactive `input()`. Always use `send-code` first, ask the user for the code via `AskUserQuestion`, then call `login` with `--code`.
-
-## Commands
-
-### Create Event
-
-```bash
-partiful create \
-  --title "Event Title" \
-  --date 2026-03-20 \
-  --time 01:00 \
-  --end-date 2026-03-20 \
-  --end-time 04:00 \
-  --timezone "America/Los_Angeles" \
-  --location "Venue Name, 123 Main St, City, ST ZIP" \
-  --description "Event description" \
-  --theme champagne \
-  --effect sparkles \
-  --image /path/to/flyer.png \
-  --public
-```
-
-**Location:** Pass a full address as `"Venue, Street, City, ST ZIP"` (3+ comma-separated parts) to set a **structured location** — the map pin that shows on the event page. The CLI builds the `locationInfo` (name, address lines, Apple/Google Maps links) from the address text, so no Google API key is needed. A plainer string (fewer parts, e.g. `"Suehiro, Little Tokyo"`) only sets the display name and Partiful shows "no location set" for the pin. Same behavior on `update --location`.
-
-**Date/time are in UTC.** Convert from Pacific time:
-- PST (Nov-Mar): add 8 hours (6pm PST = 02:00 next day UTC)
-- PDT (Mar-Nov): add 7 hours (6pm PDT = 01:00 next day UTC)
-
-Returns JSON with `eventId` and `url` (e.g., `https://partiful.com/e/{eventId}`).
-
-**Shell escaping caveat:** The Bash tool sandbox escapes `!` to `\!` in arguments. To avoid this, wrap text arguments containing `!` in a heredoc:
+**`!` gets mangled.** The Bash tool sandbox rewrites `!` to `\!` inside
+arguments, which lands literally in the event title, description, or question
+text. Wrap any text containing `!` in a heredoc:
 
 ```bash
 partiful create \
   --title "$(cat <<'EOF'
-My Event!
+Natsukashii Nomikai!
 EOF
 )" \
   --description "$(cat <<'EOF'
-Join us! It will be fun!
+Come reminisce! First round's on us.
 EOF
 )" \
   # ... other args
 ```
 
-Available themes: `aquamarine`, `aquatica`, `aurora`, `beach`, `beer`, `blacklight`, `bokeh`, `bubblegum`, `candy`, `champagne`, `cloudflow`, `crystal`, `customColor`, `darkSky`, `daybreak`, `forest`, `galaxy`, `girlyMac`, `golden`, `grass`, `ice`, `ink`, `kaleidoscope`, `karaoke`, `komorebi`, `lavaRave`, `lofiGrass`, `meadows`, `midday`, `midnight`, `oxblood`, `parchment`, `phantom`, `pool`, `rainbowGlitter`, `rush`, `shroomset`, `ski`, `slate`, `snowPaws`, `starburst`, `storybloom`, `sunrise`, `sunset`, `toile`, `twilight`, `watercolor`, `whisky`, `winterWonderland`.
+**Logging in needs a human.** `partiful login <phone>` without `--code` prompts
+on stdin; from the Bash tool it exits with an error rather than prompting. Auth
+should already be valid, but if it isn't:
 
-Available effects (default `none`): `none`, `balloons`, `basketball`, `beachballs`, `beerPong`, `bows`, `bubbles`, `bunnies`, `cascade`, `cash`, `christmasLights`, `confetti`, `confettiExplosion`, `crayons`, `dandelions`, `disco`, `doge`, `fireCannons`, `fireflies`, `fireworks`, `foils`, `football`, `gelt`, `ghosts`, `gingerbread`, `ginkgo`, `glowbugs`, `graduation`, `handprints`, `hearts`, `kisses`, `lasers`, `leaves`, `lightning`, `lights`, `magnolias`, `pizzaToppings`, `presents`, `sakura`, `shadowBats`, `shamrock`, `smoke`, `snowflakes`, `snowman`, `spaceInvaders`, `sparkles`, `spiders`, `spiderwebs`, `starrySky`, `stars`, `sunbeams`, `tennis`, `thanksgivingFood`, `winterCreatures`.
+1. Ask the user for their phone number.
+2. `partiful send-code <PHONE>`
+3. Ask the user for the SMS code with `AskUserQuestion`.
+4. `partiful login <PHONE> --code <CODE>`
 
-### Update Event
+Never invent a phone number or code, and don't send a code to a number the user
+didn't give you.
 
-```bash
-partiful update <event_id> \
-  --title "New Title" \
-  --description "New description" \
-  --location "New Location" \
-  --date 2026-03-20 --time 01:00 \
-  --image /path/to/flyer.png
-```
+## JETAASC conventions
 
-All flags are optional. Only provided fields are updated. Date/time must be provided together and are in UTC. Image uploads the file and links it to the event.
+**This skill is usually reached from `jetaasc-event-publisher`,** which has
+already collected the title, date, location, description, and flyer. Use those
+details — don't re-interview the user.
 
-### Get Event
+**Times.** The CLI takes UTC. Our events are Pacific, so:
 
-```bash
-partiful get <event_id>
-```
+- PST (Nov–Mar): add 8 hours — 6:00pm PST is `--date <next day> --time 02:00`
+- PDT (Mar–Nov): add 7 hours — 6:00pm PDT is `--date <next day> --time 01:00`
 
-Returns event fields as JSON.
+Leave `--timezone America/Los_Angeles` (the default); it only sets how the page
+labels the time, it does not convert what you passed. Sanity-check the result on
+the event page — an evening event that renders as a morning one is an offset
+applied backwards.
 
-### Delete Event
+**Visibility: link-only.** Omit `--public` unless the user asks to list the event
+on Partiful's Explore feed. The RSVP link still works for anyone who has it.
 
-```bash
-partiful delete <event_id>
-```
+**Questions: none by default.** RSVP friction costs turnout, and the events are
+usually come-as-you-are. Add questions only when the event genuinely needs the
+answer, and offer rather than assume. Reasonable cases:
+
+- Nihongo Dake Dinner or a nomikai with a set menu or a reserved table —
+  `--question "Any dietary restrictions?"`
+- Anything with a headcount-driven cost — a required dropdown beats a comment
+  thread.
+- Boba Banter and other drop-in events — usually nothing.
+
+Note that Partiful questions cover most of what we used to need a Google Form
+for; check `partiful create --help` for the available question types before
+reaching for a separate form.
+
+**Theme and effect: match the event.** There's no house style. Pick something
+that fits the vibe (a nomikai reads differently from a professional development
+talk) and mention what you chose so the user can veto it.
+
+**Location: give the full street address** — `"Venue, Street, City, ST ZIP"` — so
+the event page gets a real map pin. A bare venue name renders as "No Location
+Set", which is a bad look for a first-time attendee trying to find us.
+
+**Voice.** Same as everything else JETAASC-facing: friendly, inclusive, concise,
+no em dashes. Event types (Boba Banter, Nihongo Dake Dinner, Natsukashii Nomikai)
+are described in the repo's CLAUDE.md.
 
 ## Troubleshooting
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| `No auth config found` | Missing `clis/.partiful-auth.json` | Run the auth flow (send-code + login) |
-| `HTTP 401` | Expired refresh token | Re-authenticate with send-code + login |
-| `HTTP 403` on token refresh | Missing Referer header | Already handled in CLI code |
+| `No auth config found` | `clis/.partiful-auth.json` is missing | Run the login flow above |
+| `HTTP 401` | Refresh token expired or revoked | Same — re-run the login flow |
+| `login ... stdin is not a terminal` | Called `login` without `--code` | Use `send-code`, then `login --code` |
