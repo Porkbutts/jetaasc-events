@@ -1,11 +1,10 @@
 ---
 name: jetaasc-newsletter
 description: |
-  Build and send the JETAASC (JET Alumni Association of Southern California) monthly newsletter as a Mailchimp campaign.
-  Use when the user is ready to turn gathered content into the actual email: "build the newsletter",
-  "make the newsletter from this doc", "create the Mailchimp campaign", "send the newsletter",
-  "update the newsletter campaign", "send a test of the newsletter".
-  For collecting or editing content in the monthly Google Doc first, use jetaasc-newsletter-draft instead.
+  Build and send the JETAASC (JET Alumni Association of Southern California) monthly newsletter campaign in Mailchimp.
+  Use when the user is ready to build the actual email: "build the newsletter", "make the newsletter from this doc",
+  "create the campaign", "send the newsletter", "send a test".
+  To collect or edit content in the monthly Google Doc first, use jetaasc-newsletter-draft instead.
 ---
 
 # JETAASC Newsletter Skill
@@ -22,58 +21,16 @@ Create monthly newsletter campaigns for JETAASC using Mailchimp.
 | Upcoming Events | Yes | Events with: title, flyer image, description, date, time, location (optional: cost, RSVP link) |
 | Job Opportunities | Yes | Job listings relevant to JET alums + JETAA Job Board link (always included) |
 
-## Where content comes from
-
-Most issues are assembled in a Google Doc over the preceding month by the board.
-That doc is owned by the **`jetaasc-newsletter-draft`** skill — adding an event
-or announcement to an upcoming issue is a doc edit, not a campaign.
-
-This skill starts once the user asks to **build** or **send**. Content arrives
-one of two ways:
-
-- **From the monthly doc**, when the user points at it or says "make the
-  newsletter from this". Read it as below.
-- **Dictated in the terminal**, which is common for short issues. Do not require
-  a doc; take content from wherever the user offers it.
-
-### Reading the monthly doc
-
-`docs.documents.get` returns embedded images as `inlineObject` references with a
-`contentUri` that cannot be fetched. **Images are invisible on that path** —
-this is why reading a doc can appear to show no images at all. Use it only when
-the text alone is needed.
-
-Export the doc as a zip instead. It returns the HTML plus an `images/` directory
-holding the real bytes, and the HTML preserves each image's position:
-
-```bash
-gws drive files export --params '{"fileId":"DOC_ID","mimeType":"application/zip"}' -o doc.zip
-unzip -q doc.zip -d doc/ && ls doc/images/
-```
-
-Read the outline and the `<img src="images/...">` positions together to map each
-image to its section:
-
-- The **banner** is the image above the first `<h1>`, with its credit line
-  directly beneath.
-- A **flyer** is the image inside an event's block.
-
-Image sizing, the Mailchimp 1 MB cap, and the ~2000px Docs behaviour are in
-[../../references/public-flyers.md](../../references/public-flyers.md).
-
-### Before building
-
-List anything still empty or still marked `[PLACEHOLDER: ...]` and ask whether
-to drop those sections or wait. Do not invent missing details, and do not
-quietly ship a section with a TBA the user has not seen.
-
 ## Workflow
 
 ### 1. Gather Content
 
-If a monthly doc exists, start from it (see Where content comes from above).
-Otherwise ask
-the user for content for each section:
+Content usually comes from the monthly Google Doc, which is owned by the
+`jetaasc-newsletter-draft` skill. If the user points at one, read it per
+**Reading a doc** below. Short issues are often dictated straight into the
+terminal instead — don't require a doc.
+
+Otherwise ask the user for content for each section:
 
 ```
 I'll help create the JETAASC newsletter. I need content for:
@@ -92,10 +49,25 @@ Also needed:
 - Preview text (short teaser, ~50 chars)
 ```
 
-### 2. Process Images
+### 2. Reading a doc
 
-Images come from three places: extracted from the monthly doc's zip export (see
-Where content comes from), a local path, or a URL. In every case:
+`docs.documents.get` silently drops embedded images — it returns them as
+`inlineObject` references with a `contentUri` that can't be fetched. Export the
+doc as a zip instead, which returns the HTML plus the real image bytes with each
+image's position preserved:
+
+```bash
+gws drive files export --params '{"fileId":"DOC_ID","mimeType":"application/zip"}' -o doc.zip
+unzip -q doc.zip -d doc/
+```
+
+The banner is the image above the first `<h1>`; a flyer is the image inside an
+event's block. Flag any section still empty or marked `[PLACEHOLDER: ...]` before
+building, rather than shipping it.
+
+### 3. Process Images
+
+When you have image files (from a doc export, a local path, or a URL):
 
 1. **Check file size** - Mailchimp limit is 1MB
 2. **Compress if needed** (if >1MB) using sips or ImageMagick:
@@ -110,7 +82,7 @@ Where content comes from), a local path, or a URL. In every case:
 
 > **Note:** Always download and re-upload images rather than hotlinking external URLs.
 
-### 3. Draft Content in Markdown
+### 4. Draft Content in Markdown
 
 Before building, draft the full newsletter content in markdown and present it to the user for review. This includes the rewritten/polished text for every section — not just a summary of what's included. The user must approve the actual content before the HTML is built.
 
@@ -132,7 +104,7 @@ Does this look right, or would you like any changes?
 
 Only proceed to the build step after the user approves.
 
-### 4. Build and Publish via Subagent
+### 5. Build and Publish via Subagent
 
 Launch the `newsletter-builder` agent (subagent_type: "general-purpose") with structured content.
 
@@ -171,7 +143,7 @@ Sections:
 
 The agent reads the HTML template, interpolates content, and calls Mailchimp APIs. It returns the campaign ID and archive URL.
 
-### 5. Share Preview
+### 6. Share Preview
 
 After the agent returns, share the archive URL so the user can preview:
 
