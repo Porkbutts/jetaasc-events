@@ -85,8 +85,10 @@ and state). Venues with an established Facebook Page match well: searching
   with a digit, the search degrades into address matching: "3CAT Tustin" returns
   "3 Tustin Rd, Pasadena" and similar. Never accept one of these.
 
-Adding the city to the query does not reliably help, so do not burn many attempts
-on rephrasing. Try the venue name, maybe once more with the city, then fall back.
+The dropdown is a plain search over Facebook Pages, ranked by global check-ins,
+and each row carries an address line. Appending the city changes the ranking and
+sometimes surfaces a local page that the bare name buried. A couple of attempts is
+plenty before falling back.
 
 To use free text: type the full venue name and address, then pick the last row of
 the dropdown, which reads `Just use "<your text>"`. It is pre-checked and accepts

@@ -28,6 +28,19 @@ Automates event publishing workflow:
 
 **Trigger:** `/jetaasc-event-publisher` or ask to "publish an event"
 
+#### Canva Flyer
+
+Located in `.claude/skills/jetaasc-canva-flyer/`
+
+Builds an event flyer in Canva by driving Chrome with Claude in Chrome:
+
+1. Collect event details (looks up the venue's street address if only a name is given)
+2. Search Canva templates by vibe and confirm the pick with the user
+3. Fill in the text slots, delete extra pages, rename the design
+4. Export a PNG (with permission) and hand it to the publisher or newsletter skills
+
+**Trigger:** `/jetaasc-canva-flyer` or ask to "make a flyer for" an event
+
 #### Newsletter
 
 Located in `.claude/skills/jetaasc-newsletter/`
