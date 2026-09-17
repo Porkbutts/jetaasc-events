@@ -51,6 +51,14 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Watch: only three text boxes and no blurb. Date and time go left, venue and street right; a third line fits in either small box before it reaches the illustration. Cost and RSVP have to share those lines or be left to the post.
 - Last used:
 
+### Bubble Tea and Doughnut Promo Flyer
+- Template: https://www.canva.com/templates/EAHJoygesv8-bubble-tea-and-doughnut-promo-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHJoygesv8&category=tAFBBALx6F8
+- Look: cream, royal blue throughout, hand-lettered bouncy title, quirky single-line boba cup and doughnut characters with arms and faces, small blue sans body text. Blue on cream; the only blue Boba Banter option. 8.5 x 11.
+- Slots: title as three boxes "Bubble Tea" (about 10 chars), "and" (about 3 chars) and "Doughnuts" (about 9 chars), all hand-lettered; blurb (one box, 3 hard lines of about 14, 18 and 19 chars); script "free" (about 4 chars, sits on the doughnut); "Limited-time sweet offer" (one box, soft-wraps to 2 lines of about 12 chars); footer left "Pure Spoon" (about 10 chars); footer right "123 Anywhere St., Any City, ST 12345" (about 36 chars).
+- Watch: the title is split across three boxes; put "BOBA" in the first and "BANTER" in the third and either blank the "and" box or keep it as a small "with". The blurb sits left of the boba cup, so it stays at 3 short lines: speaker name, then date, then time. Venue name goes in "Limited-time sweet offer", street address in the wide footer line, cost or RSVP in "Pure Spoon". The "free" script is a bonus slot for "free" itself.
+- Last used:
+
 ## Nihongo Dake Dinner (warm, Japanese-flavoured)
 
 ### White Illustrative Delicious Spicy Ramen Flyer
@@ -77,6 +85,14 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Watch: the three centred lines are the logistics: date on the first, time on the second, venue on the third; the footer takes cost or RSVP. The title box is a CJK font, so replacing it with Latin copy changes the look; keep it Japanese ("日本語" or "夕食") and put the English name in the subtitle.
 - Last used: 2026-12-03 (Nihongo Dake Dinner: Yakitori Night, trial)
 
+### Red and Cream Illustrated Grand Opening Cafe Flyer
+- Template: https://www.canva.com/templates/EAGt8ywmtn0-red-and-cream-illustrated-grand-opening-cafe-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAGt8ywmtn0&category=tAFBBALx6F8
+- Look: cream with a maroon retro palette, chunky maroon display title, running noodle-bowl mascot with chopsticks and a fist, starburst badge, script accents, checkered strip with a pill-shaped venue label, solid maroon footer bar. Retro mascot style, the only maroon option. 8.5 x 11.
+- Slots: title "grand opening" (one box, soft-wraps to 2 lines of about 7 chars, very large); script "24 Hours" (about 8 chars, tilted, 2 lines); starburst "50%" and "off" (two boxes, about 3 chars each); script "Open Everyday" (about 13 chars, tilted, right of the mascot); pill "borcelle cafe" (about 13 chars, letter-spaced caps); address "123 anywhere st., any city" (about 26 chars, caps); footer bar "www.reallygreatsite.com" (about 23 chars, caps).
+- Watch: the title box takes about 7 chars per line at template size, so "NIHONGO DAKE" / "DINNER" needs a size drop or three lines. The starburst is the natural cost badge ("FREE" / "MEAL") and the two tilted scripts take the date and the all-levels note. A location-pin glyph sits between the pill and the address; delete it from Layers. The pill is venue name only; street goes in the address line and RSVP in the footer bar.
+- Last used:
+
 ## Natsukashii Nomikai (casual, brewery)
 
 ### Blue Minimalist Illustrative Happy Hour Flyer
@@ -87,14 +103,6 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Watch: every box is narrow. Full street addresses do not fit; venue name in the badge, RSVP in the handle line. Merging the two title boxes into one at 48 pt works but must be moved to Y 2.3 in to clear the badge.
 - Last used: 2026-11-07 (Natsukashii Nomikai, test)
 
-### Black and Orange Modern Brewery Event Flyer
-- Template: https://www.canva.com/templates/EAHOWBGy67M-black-and-orange-modern-brewery-event-flyer/
-- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHOWBGy67M&category=tAFBBALx6F8
-- Look: near-black with orange hazard stripes top and bottom, huge condensed cream title, orange labels, a boxed four-row line-up table, WHERE / WHEN block at the foot. Purely typographic, no illustration. 8.5 x 11. Weakest style fit in the pool: reads as a gig poster, not casual or Japan-flavoured. Use only when the illustrated nomikai entries both ran recently.
-- Slots: header "Two Rivers Brewery · Taking Over the Taps" (about 40 chars, orange caps); title "ON" / "TAP" (one box, two hard lines of about 3 chars, very large); blurb (soft-wraps to 2 lines of about 55 chars); table header "This weekend's line-up" (about 22 chars); four row pairs, name (about 18 chars) and value (about 4 chars); "Where" label and venue line "The Reporter, 123 Anywhere St., Any City" (about 40 chars); "When" label and date line "Fri 28 – Sun 30 Aug 2026 · from 4 pm" (about 36 chars).
-- Watch: the title takes about 3 chars per line at template size; "NATSUKASHII" / "NOMIKAI" need roughly a third of the size. The table is the odd part: either delete the whole boxed group (select it in Layers) or reuse the rows for "what to expect" items and blank the percentages. Venue and date lines are wide and take a full street address.
-- Last used:
-
 ### Beer Every Friday Happy Hour Flyer
 - Template: https://www.canva.com/templates/EADaolZhcus-beer-every-friday-happy-hour-flyer/
 - Editor: https://www.canva.com/design/editor/shell?create&type=TAHQEl17nBc&template=EADaolZhcus&category=tAFBBALx6F8
@@ -102,6 +110,30 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Slots: header "New at The Stockton Cafe" (about 24 chars, letter-spaced caps); title "The Oktoberfest Hoppy Hour!" (one box, soft-wraps to 3 lines of about 12 chars); tagline (one box, 2 hard lines of about 24 chars); highlight in yellow caps (one box, 2 hard lines of about 22 chars); blurb (one box, soft-wraps to 3 lines of about 45 chars).
 - Watch: all five text boxes are one group, but Find and replace still addresses them one at a time. Two pages; page 2 is a "Three cheers for beer!" back page with an address block, delete it. Put date and time in the yellow highlight, venue and street in the tagline, cost and RSVP in the blurb.
 - Last used: 2027-01-16 (Natsukashii Nomikai: Winter Edition, trial)
+
+### Red White and Black Modern Happy Hour Flyer
+- Template: https://www.canva.com/templates/EAHC99NYe3M-red-white-and-black-modern-happy-hour-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHC99NYe3M&category=tAFBBALx6F8
+- Look: rust red inside a thin black frame, two big flat-illustrated beer mugs with bold outlines, white splash shapes, white rounded display title with a black outline, black starburst sticker. Warm and cartoonish, the only red option. 8.5 x 11.
+- Slots: title as two boxes "Happy" / "Hours" (about 5 chars each, very large); time "At 7 PM - 9 PM" (about 14 chars); "Every" (about 5 chars) and "Friday" (about 6 chars, large) as two boxes bottom left; sticker "50%" and "off" (two boxes, about 3 chars each); address "123 Anywhere St., Any City" (about 26 chars, small); handle "@reallygreatsite" (about 16 chars, small).
+- Watch: the title pair only takes about 5 chars a box, so "NATSUKASHII" / "NOMIKAI" needs roughly half size. "Every" / "Friday" is the weekday and date; the sticker is the cost caveat ("21+" / "only" or "BUY" / "OWN"); the handle line takes RSVP. The right mug runs under the time line, so keep that to one line.
+- Last used:
+
+### Yellow and Green Illustrated Happy Hour Flyer
+- Template: https://www.canva.com/templates/EAHC9tRhvh8-yellow-and-green-illustrated-happy-hour-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHC9tRhvh8&category=tAFBBALx6F8
+- Look: butter yellow with everything in one dark green, an arched frame, curved header text, tall serif title, line-art waiter holding two wine glasses, sparkles, two scalloped badges, a ruled two-column strip and a blurb box at the foot. Retro line-art, the only yellow option. 8.5 x 11.
+- Slots: curved header "THE AROWWAI CLUB" (about 16 chars); "PRESENT" (about 7 chars); title "HAPPY HOUR" (about 10 chars, one line); left badge "Limited stock" (about 13 chars, 2 lines); right badge "50% off" (about 7 chars, 2 lines); strip left "everyday" (about 8 chars); strip right "AT 11 PM - 2 AM" (about 15 chars); blurb (one box, soft-wraps to 2 lines of about 36 chars); URL "www.reallygreatsite.com" (about 23 chars).
+- Watch: title is 10 chars at template size; "NOMIKAI" fits, "NATSUKASHII NOMIKAI" needs a size drop. The strip takes date left and time right; venue and street go in the blurb, cost in a badge, RSVP in the URL line. The waiter illustration is wine, not beer; swap it from Elements if that matters.
+- Last used:
+
+### Orange and White Illustrated Happy Hour Flyer
+- Template: https://www.canva.com/templates/EAHC9qHqtZw-orange-and-white-illustrated-happy-hour-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHC9qHqtZw&category=tAFBBALx6F8
+- Look: burnt orange, white checkerboard arcs in three corners, two hand-drawn cocktail glasses with cherry and orange slice, tall white serif title, two-part pill for day and time. Hand-drawn and warm, the only orange option. 8.5 x 11.
+- Slots: header "Liceria club present" (about 20 chars, letter-spaced caps); title "Happy Hour" (one box, soft-wraps to 2 lines of about 5 chars); "get discount 45% off" (about 20 chars, caps); pill left "Everyday" (about 8 chars); pill right "9 pm-10 PM" (about 10 chars); blurb (one box, soft-wraps to 2 lines of about 33 chars); URL "www.reallygreatsite.com" (about 23 chars).
+- Watch: the title box is narrow (about 5 chars a line), so "NATSUKASHII" needs a size drop or the discount line takes "NOMIKAI". Pills are date and time; venue and street go in the blurb, cost in the discount line, RSVP in the URL line. The left cocktail overlaps the title's left edge; click the title at its right side if a coordinate click is needed.
+- Last used:
 
 ## Mixers and general socials
 
@@ -119,4 +151,28 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Look: white, flat-colour Mount Fuji with a red sun, blue clouds, pink sakura and a torii with lanterns in the middle, red sans title top and red date below. Bright and illustrated, the opposite of the navy entry. 18 x 24 poster (3:4), so export at default size gives a large PNG.
 - Slots: title "Japanese" (about 8 chars, red, large); subtitle "culture festival" (about 16 chars, letter-spaced caps); date "02 May, 2022" (about 12 chars, red); org line "Salford & co." (about 13 chars, letter-spaced caps); blurb (one box, soft-wraps to 3 lines of about 90 chars, small).
 - Watch: the title only takes about 8 chars at template size; "MIXER" fits, "WELCOME BACK" needs a size drop and pushes into the sun. The date line and org line are 12 to 13 chars, enough for a date and a venue name, not an address. The blurb is tiny for a poster: bump it a few points if it carries the address and RSVP.
+- Last used:
+
+### White Pink and Red Modern Japanese Poster
+- Template: https://www.canva.com/templates/EAFG1XARFn8-white-pink-and-red-modern-japanese-poster/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-oYd_9A&template=EAFG1XARFn8&category=tAFBBNL-eFc
+- Look: white, flat-colour Himeji castle over a red sun with pink sakura clouds, pink rounded title and letter-spaced caps subtitle, pink date block, tiny grey blurb. Same family as the Fuji entry but pink, the only pink option. 18 x 24 poster (3:4), so export at default size gives a large PNG.
+- Slots: title "Japanese" (about 8 chars, pink, large); subtitle "culture festival" (about 16 chars, letter-spaced caps); "Monday" (about 6 chars, letter-spaced); date "02 May, 2022" (about 12 chars, pink); org line "Rimberio co" (about 11 chars, letter-spaced caps); blurb (one box, soft-wraps to 3 lines of about 80 chars, small).
+- Watch: the title takes about 8 chars at template size; "MIXER" fits, longer names need a size drop into the sun. The weekday, date and org lines are 6 to 12 chars, fine for logistics but not a street address; that goes in the blurb, which is tiny for a poster, so bump it several points if it carries the address, cost and RSVP.
+- Last used:
+
+### Orange Yellow Playful Illustration Japan Food Festival Event Flyer
+- Template: https://www.canva.com/templates/EAGxRw7Ujis-orange-yellow-playful-illustration-japan-food-festival-event-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAGxRw7Ujis&category=tAFBBALx6F8
+- Look: cream with golden cloud swirls at the top, faint pagoda sketches either side, big red display "JAPAN" over an orange condensed subtitle, two orange banner badges, ramen bowl, sashimi and onigiri illustrations along the foot. Illustrated and busy, the only cream-and-gold option. Suits a food-heavy mixer or NDD too. 8.5 x 11.
+- Slots: title "Japan" (about 5 chars, very large); subtitle "Food Festival" (about 13 chars, condensed); blurb "Live Music | Food Court | ..." (one box, soft-wraps to 3 lines of about 28 chars, bold caps); badge 1 date "15-25 May 2030" (about 14 chars) over time "10:00 am - 10:00 pm" (about 19 chars); badge 2 venue "Borcelle Garden" (about 15 chars) over address "123 Anywhere St., Any City" (about 26 chars); URL "www.reallygreatsite.com" (about 23 chars, letter-spaced).
+- Watch: the title box is 5 chars; "MIXER" fits exactly, anything longer needs a size drop. The two badges are the whole logistics block (date and time, venue and street) and are already wide enough; cost and RSVP go in the blurb or URL line. The food illustrations are separate images and can be deleted if the event is not about food.
+- Last used:
+
+### Blue and White Hand Drawn Whimsical Meet Me Courtside Invitation Flyer
+- Template: https://www.canva.com/templates/EAHJilqNsfg-blue-and-white-hand-drawn-whimsical-meet-me-courtside-invitation-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHJilqNsfg&category=tAFBBALx6F8
+- Look: navy with a white hand-drawn wavy frame, line-art lemonade glass and deck chair, everything in a white handwriting font. Hand-drawn and whimsical, not Japan-themed on its own; swap the two doodles for a lantern or onigiri from Elements if the event wants it. Illustrated counterpart to the navy seigaiha entry. 8.5 x 11.
+- Slots: title "Meet Me Courtside" (about 17 chars, script); tagline "A summer social for tennis lovers" (about 33 chars, script); blurb (one box, 2 lines of about 26 chars); date "02 July, 2030" (about 13 chars, script, large); address "123 Anywhere St., Any City" (about 26 chars, small); "Join the club" (about 13 chars, script); URL "www.reallygreatsite.com" (about 23 chars, small).
+- Watch: all copy is in a handwriting font, so keep addresses short and check digits in the screenshot. Seven roomy boxes and a wide open middle; the title and tagline can each grow a line. Time shares the date line.
 - Last used:

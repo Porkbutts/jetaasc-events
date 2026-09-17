@@ -68,7 +68,11 @@ enough, and `scroll` returns its own screenshot, so do not add one.
 Each result card's `aria-label` reads like "Preview free <name> template,
 2 pages", which gives free-versus-Pro and the page count without a
 screenshot. Reading those labels with `javascript_tool` covers a whole
-results page in one call.
+results page in one call, provided the script filters to free flyer and
+poster cards and caps the list; the tool truncates long results. Wait a
+few seconds after navigating to a results page before listing, or the
+list comes back empty. Queries that also fail: "sake flyer" (autocorrects
+to "sale") and "japanese pub flyer" (pub quizzes).
 
 Per event type, the vibe to look for:
 
@@ -110,7 +114,11 @@ hard-broken lines; the placeholder text and its length give the width.
 scroll before reading a second page. Faster is one `javascript_tool` call
 that finds `[aria-label="Canvas content"]` and walks its children for
 aria-labels and leaf text; that gives the whole inventory in a single
-round trip. Select a box (type its text into Find and replace, `cmd+f`)
+round trip. Canva paints the labels before the text, so poll until the
+canvas's `textContent` is non-trivial rather than until labels appear;
+use `textContent`, never `innerText`, which forces layout and can hang
+the call. Strip `?`, `&` and `=` from every result, not only hrefs; a
+placeholder containing them trips the same filter. Select a box (type its text into Find and replace, `cmd+f`)
 and read the Arrange tab's Width to get inches only if the character
 estimate looks doubtful; it rarely does.
 
@@ -131,9 +139,19 @@ it in the account, which is harmless.
 ## Recording
 
 Append to the right event-type section of `templates.md`, matching the
-existing entries' shape. Two or three entries per event type is the target;
-more than five per type is clutter. If a candidate suits two event types,
-file it under the closer one and say so in Look.
+existing entries' shape. Five entries per event type is the target. If a
+candidate suits two event types, file it under the closer one and say so
+in Look.
+
+Save a thumbnail as `thumbs/<template id>.jpg` beside `templates.md`, so
+the pool can be rendered as a gallery (`scripts/pool-gallery.py`) and
+reviewed by eye. On the template page the flat preview is the largest
+`img` whose source is on `template.canva.com`; it arrives a few seconds
+after the mockup carousel, so poll for it in `javascript_tool` (top-level
+`await` works) rather than waiting a fixed time. Its URL is signed and
+short-lived, so read it (with the query-string tokens swapped as above),
+`curl` it straight away, and shrink it with `sips -Z 520`. A page
+screenshot is not a substitute; it shows the mockup, not the template.
 
 Aim for spread within a section: not all cream, not all line-art, at least
 one typographic option. That spread is what lets the flyer skill honour
