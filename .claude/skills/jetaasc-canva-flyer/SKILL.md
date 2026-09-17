@@ -1,6 +1,6 @@
 ---
 name: jetaasc-canva-flyer
-description: Create a JETAASC (JET Alumni Association of Southern California) event flyer in Canva by driving the Chrome browser with Claude in Chrome. Use when the user wants a flyer, graphic, or image for an event to share on socials, the newsletter, Discord, or Facebook. Triggers include "make a flyer", "canva flyer", "create a flyer for", "design a graphic for the event", or any request for event artwork. Produces a saved Canva design and, with permission, a PNG export.
+description: Create a JETAASC (JET Alumni Association of Southern California) event flyer in Canva by driving the Chrome browser with Claude in Chrome. Use when the user wants a flyer, graphic, or image for an event to share on socials, the newsletter, Discord, or Facebook. Triggers include "make a flyer", "canva flyer", "create a flyer for", "design a graphic for the event", or any request for event artwork. Produces a saved Canva design and a downloaded PNG.
 ---
 
 # JETAASC Canva Flyer
@@ -45,7 +45,8 @@ Read [templates.md](templates.md). It is the pool of vetted templates, each
 with the event types it suits, a description of its look, its text slots,
 and when it was last used. Pick the entry that fits the event type, was
 used least recently, and does not share a palette or motif with the two
-most recent "last used" dates. Confirm the pick with the user unless they
+most recent "last used" dates. Style comes before variety: an entry
+flagged as a weak style fit is a last resort, not a rotation slot. Confirm the pick with the user unless they
 have said to just go; the veto so far has been about feel, not fields.
 
 Navigate straight to the entry's editor link. It creates a new design in
@@ -181,15 +182,26 @@ size is right for socials. The Download button can be disabled for a
 moment while the panel loads; re-find it. Chrome saves to
 `~/Downloads/<design name>.png`. Rename to the Public Flyers pattern
 `JETAASC_<YYYY-MM-DD>_<Event_Name>.png` before it goes anywhere.
-Downloading needs the user's OK, and "take the flyer and post it" counts
-as one.
+
+Always download. The PNG is the deliverable and the only thing the user
+can check at a glance, so a flyer that stops at "saved in Canva" is not
+finished. Adrian has given standing approval for the PNG export; do not
+stop to ask, and send the file to the user (SendUserFile) rather than an
+editor screenshot. Uploading to Drive or posting anywhere still waits for
+the request that covers it.
 
 ## What JETAASC wants
 
-**Template matches the vibe, not the word "event."** A corporate networking
-template is wrong for a nomikai even if it has the right text slots. Casual
-socials want something warm and Japanese-flavoured; Boba Banter can look
-more professional. The pool is organised around this.
+**JETAASC's style is casual and Japan-oriented.** Hand-drawn or flat
+illustration, warm palettes, Japanese motifs where they fit (noodle bowls,
+seigaiha waves, sakura, torii, lanterns, kanji titles). What it is not:
+corporate or networking. Icon rows, "what to expect" grids, globe logos,
+calendar and pin glyphs, hazard stripes and boxed agendas all read as a
+tech meetup, and a flyer built on them gets vetoed even when every detail
+fits. Boba Banter can lean a little more polished than a nomikai, but it
+is still a tea shop, not a conference. The pool is curated to this bar;
+if the only entry that fits the slots looks like a meetup, pick the one
+that looks like JETAASC and adjust the copy.
 
 **Variety across events.** Flyers appear side by side in the newsletter,
 Discord, and Facebook, so consecutive flyers should differ in palette and

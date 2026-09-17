@@ -81,8 +81,21 @@ Per event type, the vibe to look for:
 
 ## Vetting a candidate
 
+JETAASC's style is casual and Japan-oriented: hand-drawn or flat
+illustration, warm palettes, Japanese motifs (noodle bowls, seigaiha
+waves, sakura, torii, lanterns, kanji) where they suit the event. The
+test for a candidate is whether it could be for a community of friends
+who lived in Japan. Anything that reads as a tech meetup, a corporate
+networking night, or a gig poster fails that test no matter how good its
+slots are: icon rows, "what to expect" grids, globe or handshake logos,
+calendar and pin glyphs beside the logistics, hazard stripes, boxed
+agendas. A language-exchange flyer with a globe logo and four round icons
+was built into a real flyer and vetoed on sight; that is the bar.
+
 Reject on any of these before recording:
 
+- A look that fails the style test above. Check this first; it is the
+  commonest reason a slot-perfect template is wrong.
 - A crown badge on the result card. Pro templates are out.
 - A headshot or photo slot the layout depends on. JETAASC rarely has one.
 - Text boxes narrower than about 12 characters at the template's size for

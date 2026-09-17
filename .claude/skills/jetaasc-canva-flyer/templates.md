@@ -2,8 +2,10 @@
 
 Vetted Canva templates for JETAASC flyers. `jetaasc-canva-flyer` picks from
 here; `jetaasc-canva-template-scout` adds to it. Every entry is free (no
-crown), single page, has no headshot slot, and has text boxes wide enough
-to take real event copy.
+crown), single page, has no headshot slot, has text boxes wide enough to
+take real event copy, and looks casual and Japan-flavoured rather than
+corporate. Icon grids, "what to expect" rows, globe logos and networking
+layouts do not belong here.
 
 Editor link: navigating to it creates a fresh design from the template in
 the current tab. Slots: the text boxes in reading order with their
@@ -88,7 +90,7 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 ### Black and Orange Modern Brewery Event Flyer
 - Template: https://www.canva.com/templates/EAHOWBGy67M-black-and-orange-modern-brewery-event-flyer/
 - Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHOWBGy67M&category=tAFBBALx6F8
-- Look: near-black with orange hazard stripes top and bottom, huge condensed cream title, orange labels, a boxed four-row line-up table, WHERE / WHEN block at the foot. Purely typographic, no illustration. 8.5 x 11.
+- Look: near-black with orange hazard stripes top and bottom, huge condensed cream title, orange labels, a boxed four-row line-up table, WHERE / WHEN block at the foot. Purely typographic, no illustration. 8.5 x 11. Weakest style fit in the pool: reads as a gig poster, not casual or Japan-flavoured. Use only when the illustrated nomikai entries both ran recently.
 - Slots: header "Two Rivers Brewery · Taking Over the Taps" (about 40 chars, orange caps); title "ON" / "TAP" (one box, two hard lines of about 3 chars, very large); blurb (soft-wraps to 2 lines of about 55 chars); table header "This weekend's line-up" (about 22 chars); four row pairs, name (about 18 chars) and value (about 4 chars); "Where" label and venue line "The Reporter, 123 Anywhere St., Any City" (about 40 chars); "When" label and date line "Fri 28 – Sun 30 Aug 2026 · from 4 pm" (about 36 chars).
 - Watch: the title takes about 3 chars per line at template size; "NATSUKASHII" / "NOMIKAI" need roughly a third of the size. The table is the odd part: either delete the whole boxed group (select it in Layers) or reuse the rows for "what to expect" items and blank the percentages. Venue and date lines are wide and take a full street address.
 - Last used:
@@ -117,12 +119,4 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Look: white, flat-colour Mount Fuji with a red sun, blue clouds, pink sakura and a torii with lanterns in the middle, red sans title top and red date below. Bright and illustrated, the opposite of the navy entry. 18 x 24 poster (3:4), so export at default size gives a large PNG.
 - Slots: title "Japanese" (about 8 chars, red, large); subtitle "culture festival" (about 16 chars, letter-spaced caps); date "02 May, 2022" (about 12 chars, red); org line "Salford & co." (about 13 chars, letter-spaced caps); blurb (one box, soft-wraps to 3 lines of about 90 chars, small).
 - Watch: the title only takes about 8 chars at template size; "MIXER" fits, "WELCOME BACK" needs a size drop and pushes into the sun. The date line and org line are 12 to 13 chars, enough for a date and a venue name, not an address. The blurb is tiny for a poster: bump it a few points if it carries the address and RSVP.
-- Last used:
-
-### Blue and Red Minimalist Language Exchange Meetup Flyer
-- Template: https://www.canva.com/templates/EAFoDUXBrK0-blue-and-red-minimalist-language-exchange-meetup-flyer/
-- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAFoDUXBrK0&category=tAFBBALx6F8
-- Look: cream with teal and maroon bands, globe-and-people logo top left, tall condensed three-word title, calendar and pin icons beside the logistics, a "What to Expect" row of four round icons, teal footer bar. Busy but organised, suits a language or welcome mixer; would also do for Nihongo Dake Dinner. 8.5 x 11.
-- Slots: title as three boxes "language" / "exchange" / "meetup" (about 8 chars each); tagline "Connect, Learn, and Explore Together!" (about 37 chars); blurb in the teal band (one box, soft-wraps to 4 lines of about 80 chars); time "01:00 - 03:00 pm" and date "17 November 2024" (two boxes, about 16 chars each); venue "Hanover and Tyke" and street "123 Anywhere St., Any City" (two boxes, about 16 and 26 chars); "What to Expect :" (about 16 chars); four icon captions (two lines of about 12 chars each); footer handle, URL and phone (about 16, 22 and 12 chars).
-- Watch: three title boxes stack, so a two-word event name leaves one to delete or repurpose. The four icon captions and their icons are the bulk of the page; either write four short perks or delete the whole row and the maroon band. Everything else is wide enough for real copy.
 - Last used:
