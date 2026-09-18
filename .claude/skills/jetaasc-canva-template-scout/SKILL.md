@@ -69,7 +69,10 @@ Each result card's `aria-label` reads like "Preview free <name> template,
 2 pages", which gives free-versus-Pro and the page count without a
 screenshot. Reading those labels with `javascript_tool` covers a whole
 results page in one call, provided the script filters to free flyer and
-poster cards and caps the list; the tool truncates long results. Wait a
+poster cards and trims each line to the name and the eleven-character
+id; the tool truncates results at about a thousand characters. A
+contact sheet of several previews (tile them with PIL) judges look
+faster than opening each one. Wait a
 few seconds after navigating to a results page before listing, or the
 list comes back empty. Queries that also fail: "sake flyer" (autocorrects
 to "sale") and "japanese pub flyer" (pub quizzes).
@@ -94,7 +97,13 @@ networking night, or a gig poster fails that test no matter how good its
 slots are: icon rows, "what to expect" grids, globe or handshake logos,
 calendar and pin glyphs beside the logistics, hazard stripes, boxed
 agendas. A language-exchange flyer with a globe logo and four round icons
-was built into a real flyer and vetoed on sight; that is the bar.
+was built into a real flyer and vetoed on sight; that is the bar. A
+single removable glyph on an otherwise strongly Japanese or hand-drawn
+template does not fail it; note "delete the glyph from Layers" in Watch.
+Commercial promotions (discount badges, "order now", package prices) do
+fail it, with one allowance: restaurant-promo templates are the only
+place Japanese food illustration turns up, so an NDD entry may carry a
+"best seller" line as long as the flyer skill can replace it.
 
 Reject on any of these before recording:
 
@@ -114,11 +123,16 @@ hard-broken lines; the placeholder text and its length give the width.
 scroll before reading a second page. Faster is one `javascript_tool` call
 that finds `[aria-label="Canvas content"]` and walks its children for
 aria-labels and leaf text; that gives the whole inventory in a single
-round trip. Canva paints the labels before the text, so poll until the
-canvas's `textContent` is non-trivial rather than until labels appear;
-use `textContent`, never `innerText`, which forces layout and can hang
-the call. Strip `?`, `&` and `=` from every result, not only hrefs; a
-placeholder containing them trips the same filter. Select a box (type its text into Find and replace, `cmd+f`)
+round trip. A text box is an aria-labelled node with no aria-labelled
+descendants; the "Canvas content" node and the page group carry labels
+too, so filter to the leaves. Canva paints the labels before the text and
+first shows "Screen reader content is loading", so poll until the
+canvas's `textContent` is past about 40 characters and no longer
+contains that phrase; use `textContent`, never `innerText`, which forces
+layout and can hang the call. Strip `?`, `&` and `=` from every result,
+not only hrefs; a placeholder containing them trips the same filter.
+Letter-spaced boxes can come back as one- or two-letter fragments;
+record them as one box. Select a box (type its text into Find and replace, `cmd+f`)
 and read the Arrange tab's Width to get inches only if the character
 estimate looks doubtful; it rarely does.
 
@@ -139,13 +153,17 @@ it in the account, which is harmless.
 ## Recording
 
 Append to the right event-type section of `templates.md`, matching the
-existing entries' shape. Five entries per event type is the target. If a
-candidate suits two event types, file it under the closer one and say so
-in Look.
+existing entries' shape. Five entries per event type is the target, ten
+for Boba Banter and for mixers and general socials, the two that run
+most often and cover the widest range of events.
+If a candidate suits two event types, file it under the closer one and
+say so in Look.
 
 Save a thumbnail as `thumbs/<template id>.jpg` beside `templates.md`, so
-the pool can be rendered as a gallery (`scripts/pool-gallery.py`) and
-reviewed by eye. On the template page the flat preview is the largest
+the pool can be rendered as a gallery (`scripts/pool-gallery.py` at the
+repo root, which takes an output path) and reviewed by eye. Write each
+entry and its thumbnail as soon as it is vetted rather than at the end,
+so a cut-off run leaves the pool consistent. On the template page the flat preview is the largest
 `img` whose source is on `template.canva.com`; it arrives a few seconds
 after the mockup carousel, so poll for it in `javascript_tool` (top-level
 `await` works) rather than waiting a fixed time. Its URL is signed and

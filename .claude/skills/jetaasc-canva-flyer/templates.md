@@ -59,6 +59,46 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Watch: the title is split across three boxes; put "BOBA" in the first and "BANTER" in the third and either blank the "and" box or keep it as a small "with". The blurb sits left of the boba cup, so it stays at 3 short lines: speaker name, then date, then time. Venue name goes in "Limited-time sweet offer", street address in the wide footer line, cost or RSVP in "Pure Spoon". The "free" script is a bonus slot for "free" itself.
 - Last used:
 
+### Green Textured Matcha Workshop Flyer
+- Template: https://www.canva.com/templates/EAHOQHN5aQ0-green-textured-matcha-workshop-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHOQHN5aQ0&category=tAFBBALx6F8
+- Look: deep matcha green with a powdery texture, cream flared serif title over a plain sans subtitle, two cream four-point sparkles, and a cream ticket-shaped block with a stamp edge that holds the whole logistics grid. Dark and typographic; the only dark option for Boba Banter and the one with the most orderly logistics. 8.5 x 11.
+- Slots: org line "STUDIO NORTH" (about 12 chars, small caps, top left); "COME EXPLORE" (about 12 chars, small caps); title "Matcha" (about 6 chars, large serif); subtitle "Workshop" (about 8 chars, sans); ticket top row as four boxes: "FRIDAY" (about 6 chars), "18" (about 2 chars, large), "JUNE" (about 4 chars, under the number), "15:00" (about 5 chars); ticket address "123 ANYWHERE ST., ANY CITY" (about 26 chars, caps); ticket bottom left "REGISTER AT" (about 11 chars) over "@REALLYGREATSITE" (about 16 chars); ticket bottom right blurb "EXPLORE THE ART OF JAPANESE TEA CULTURE" (one box, soft-wraps to 3 lines of about 14 chars, caps).
+- Watch: the ticket boxes are short, so "BOBA" / "BANTER" go in the title and subtitle, the speaker name in "COME EXPLORE" (12 chars, or widen it), and the blurb box takes about 40 chars. The date is split into weekday, day number and month boxes with rules between them; time is a 5-char box, so "6:30 PM" fits but not a range. Cost goes in the blurb or the "REGISTER AT" pair. The background texture is a raster image; do not delete it from Layers.
+- Last used:
+
+### Beige Whimsical Illustrated Coffee Shop Flyer
+- Template: https://www.canva.com/templates/EAHJhz_bF9Y-beige-whimsical-illustrated-coffee-shop-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHJhz_bF9Y&category=tAFBBALx6F8
+- Look: warm beige, brown script "But first" over a huge condensed brown "COFFEE", a tilted orange ticket sticker for the hours, and a brown line-art cafe table with two chairs, two cups and a vase filling the middle. Line-art and cream like the coffee-day entry, but the two-chairs-at-a-table scene is the most "sit down and talk" of the pool. 8.5 x 11.
+- Slots: script lead-in "But first" (about 9 chars); title "COFFEE" (about 6 chars, very large condensed); ticket "WEEKDAYS" (about 8 chars) over "8AM - 8PM" (about 9 chars, both in the tilted orange sticker); tagline "CRAFT COFFEE - BAKED GOODS - GOOD PEOPLE" (about 40 chars, bold caps, under the illustration); footer (one box, 2 hard lines: "Address: 123 Anywhere St., Any City, ST 12345" about 45 chars, "Our site: www.reallygreatsite.com" about 33 chars, small).
+- Watch: "But first" takes "Boba Banter" in script at about 11 chars and the big title takes the speaker's first name, or leave "BOBA" / "BANTER" split across the two and put the speaker in the tagline (40 chars). The ticket is date and time; a date longer than about 8 chars needs a size drop. The footer's two lines are venue and RSVP, so the blurb shares the tagline or is left to the post. The table illustration sits between the ticket and the tagline, so neither can grow toward it.
+- Last used:
+
+### Green White and Brown Illustrated Tea Club Flyer
+- Template: https://www.canva.com/templates/EAHPAFNl6TI-green-white-and-brown-illustrated-tea-club-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHPAFNl6TI&category=tAFBBALx6F8
+- Look: white with a watercolour column of tea leaves, spices, cinnamon and ginger down the left edge, a green postage stamp with a cancellation mark at the top, italic serif title, small green script and serif lines centred in the open right two-thirds, tiny leaf sprigs as dividers. Quiet, botanical and warm; the most understated Boba Banter option and the only watercolour one. 8.5 x 11.
+- Slots: title "The Tea Club" (about 12 chars, italic serif); "EST. 2024" (about 9 chars, small letter-spaced caps); lead-in "Meet the Tea Club at" (about 20 chars, italic); venue "Village Fetes" (about 13 chars, larger italic); date and time (one box, 2 hard lines: "Sat 11 July" about 11 chars, "11 am - 5 pm" about 12 chars, green); footer "More sipping, spilling and stirring" (about 35 chars, italic).
+- Watch: only six boxes and no street address line; the footer (35 chars) is the blurb and the venue box is a name only, so the street and RSVP go to the post or the footer grows a second line, which has room. The speaker fits the lead-in ("A talk with Jane Doe", 20 chars) with "Boba Banter" as the title. The right side is nearly empty below the footer, so every centred box can grow a line without touching anything.
+- Last used:
+
+### Pink Yellow and Green Illustrated Afternoon Tea Party Flyer
+- Template: https://www.canva.com/templates/EAHCWNi0CVI-pink-yellow-and-green-illustrated-afternoon-tea-party-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHCWNi0CVI&category=tAFBBALx6F8
+- Look: olive green, a pink rounded sans "Afternoon" over a cream "Tea Party", a cream line-art hand offering a teacup on a saucer in a cream panel, pink blurb, small cream footer. Flat and illustrated with an unusual olive-and-pink palette, the only olive option; the stock blurb already says "stay for the conversations". 8.5 x 11.
+- Slots: date "03/02" (about 5 chars, top left); time "18:00" (about 5 chars, top right); title as two boxes "Afternoon" (about 9 chars, pink) and "Tea Party" (about 9 chars, cream, larger); blurb (one box, 2 hard lines of about 17 and 27 chars, pink, centred); address "123 Anywhere St., Any City" (about 26 chars, small, bottom left); URL "reallygreatsite.com" (about 19 chars, small, bottom right).
+- Watch: the two top-corner boxes are only 5 chars, but nothing sits beside them, so widen each toward the centre for a full date and a time range. The two title boxes take "Boba" / "Banter" at template size; the speaker name goes in the blurb's first line (17 chars) or a widened top-right box. Venue name shares the address line; cost and RSVP go in the URL line. The hand-and-cup illustration fills the middle band, so the blurb cannot grow upward.
+- Last used:
+
+### Blue and Pink Illustrated Tea Party Flyer
+- Template: https://www.canva.com/templates/EAHMcYy31hc-blue-and-pink-illustrated-tea-party-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHMcYy31hc&category=tAFBBALx6F8
+- Look: royal blue, a big lilac teapot silhouette with the navy script title written across it, a striped teacup and a stack of macarons beside it, lilac italic tagline and condensed serif logistics centred underneath. Flat and playful, the only blue Boba Banter option after the doughnut one, and much darker. 8.5 x 11.
+- Slots: header "ARTSY CAFE" (about 10 chars, letter-spaced caps) over "presents" (about 8 chars); title as two boxes "Tea" (about 3 chars) and "Party" (about 5 chars, both large script on the teapot); tagline "Gather Around for Tea, Laughs & Sweet Treats" (about 44 chars, italic); date and time "June 5 2028 | 3-6 PM" (about 21 chars, condensed serif, large); address "123 Anywhere St., Any City, ST 12345" (about 36 chars); URL "reallygreatsite.com" (about 19 chars, letter-spaced caps).
+- Watch: the title boxes are script on top of the teapot and take about 3 and 5 chars; "Boba" / "Banter" fits at a small drop. The speaker name goes in the tagline (44 chars) or replaces "presents" under a "JETAASC" header. Cost and RSVP share the URL line. The tagline and address boxes are letter-spaced, so Find and replace sees them whole even though the accessibility tree splits them into fragments.
+- Last used:
+
 ## Nihongo Dake Dinner (warm, Japanese-flavoured)
 
 ### White Illustrative Delicious Spicy Ramen Flyer
@@ -91,6 +131,14 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Look: cream with a maroon retro palette, chunky maroon display title, running noodle-bowl mascot with chopsticks and a fist, starburst badge, script accents, checkered strip with a pill-shaped venue label, solid maroon footer bar. Retro mascot style, the only maroon option. 8.5 x 11.
 - Slots: title "grand opening" (one box, soft-wraps to 2 lines of about 7 chars, very large); script "24 Hours" (about 8 chars, tilted, 2 lines); starburst "50%" and "off" (two boxes, about 3 chars each); script "Open Everyday" (about 13 chars, tilted, right of the mascot); pill "borcelle cafe" (about 13 chars, letter-spaced caps); address "123 anywhere st., any city" (about 26 chars, caps); footer bar "www.reallygreatsite.com" (about 23 chars, caps).
 - Watch: the title box takes about 7 chars per line at template size, so "NIHONGO DAKE" / "DINNER" needs a size drop or three lines. The starburst is the natural cost badge ("FREE" / "MEAL") and the two tilted scripts take the date and the all-levels note. A location-pin glyph sits between the pill and the address; delete it from Layers. The pill is venue name only; street goes in the address line and RSVP in the footer bar.
+- Last used:
+
+### Cream Illustrative Japanese Food Promotion Flyer
+- Template: https://www.canva.com/templates/EAF0H5V6u30-cream-illustrative-japanese-food-promotion-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAF0H5V6u30&category=tAFBBALx6F8
+- Look: cream with orange wave swirls, a koi fish at the top right and a daruma at the right edge, three isometric sushi platters with chopsticks and soy dishes stepping down the page, tall maroon condensed title, a small orange "Best Seller" badge, small maroon body text. Illustrated and Japanese without being a ramen bowl; the only koi option, and the calmest NDD entry. 8.5 x 11.
+- Slots: org line "Salford & Co." (about 13 chars, small caps, top left); title "Japanese Food" (one box, soft-wraps to 2 lines of about 8 chars, very large); right heading "The best sushi" (about 14 chars, bold); right blurb (one box, soft-wraps to 3 lines of about 22 chars); badge "Best Seller" (about 11 chars, two lines, tilted); left heading "Come and try it!" (one box, soft-wraps to 2 lines of about 8 chars, bold); left blurb "Come and taste the best sushi in town." (one box, soft-wraps to 2 lines of about 22 chars); footer left "reallygreatsite.com" (about 19 chars); footer centre "+123 456 789" (about 12 chars); footer right "Order now" (about 9 chars, bold).
+- Watch: no dedicated date or address boxes, so the two heading-and-blurb pairs are the logistics: date and time in the right heading and blurb, venue and street in the left pair, and the badge becomes "All levels" / "welcome" or "Free" / "to join". The footer trio takes RSVP, cost and a handle. The sushi platters run down the centre between the two text columns, so neither blurb can grow wider; add lines instead. "NIHONGO DAKE" / "DINNER" fits the title at a small size drop.
 - Last used:
 
 ## Natsukashii Nomikai (casual, brewery)
@@ -175,4 +223,44 @@ Update "Last used" when a flyer ships. Leave it blank for never.
 - Look: navy with a white hand-drawn wavy frame, line-art lemonade glass and deck chair, everything in a white handwriting font. Hand-drawn and whimsical, not Japan-themed on its own; swap the two doodles for a lantern or onigiri from Elements if the event wants it. Illustrated counterpart to the navy seigaiha entry. 8.5 x 11.
 - Slots: title "Meet Me Courtside" (about 17 chars, script); tagline "A summer social for tennis lovers" (about 33 chars, script); blurb (one box, 2 lines of about 26 chars); date "02 July, 2030" (about 13 chars, script, large); address "123 Anywhere St., Any City" (about 26 chars, small); "Join the club" (about 13 chars, script); URL "www.reallygreatsite.com" (about 23 chars, small).
 - Watch: all copy is in a handwriting font, so keep addresses short and check digits in the screenshot. Seven roomy boxes and a wide open middle; the title and tagline can each grow a line. Time shares the date line.
+- Last used:
+
+### Pink Blue Illustrated Cherry Blossom Festival Flyer
+- Template: https://www.canva.com/templates/EAGiU3lsP0o-pink-blue-illustrated-cherry-blossom-festival-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAGiU3lsP0o&category=tAFBBALx6F8
+- Look: soft pink, painterly sakura branches in the top corners, navy seigaiha cloud bands, two pink lanterns, a castle and torii illustration filling the lower third, tall serif title. Illustrated and richly Japanese, the most decorated pink option; a natural hanami or spring mixer flyer. 8.5 x 11.
+- Slots: header "Aldenaire International" (about 23 chars, small, inside a lotus logo frame); title "Cherry Blossom Festival" (one box, soft-wraps to 2 lines of about 14 chars); tagline "A Celebration of Nature's Beauty" (about 34 chars, italic); left heading "ABOUT FESTIVAL" (about 14 chars, caps); blurb (one box, soft-wraps to 4 lines of about 32 chars); right heading "DETAIL INFORMATION" (about 18 chars, caps); venue "Liceria" (about 7 chars, letter-spaced caps); address "123 Anywhere St., Any City, ST 12345" (about 36 chars); date "20 March - 13 April" (about 19 chars); "MORE INFORMATION" (about 16 chars, caps); "VISIT OUR WEBSITE" (about 17 chars, caps); URL "www.reallygreatsite.com" (about 23 chars).
+- Watch: a location pin sits after the venue and a calendar glyph before the date; delete both from Layers. The lotus logo above the header is a separate element, delete it or leave it. The venue line is only 7 letter-spaced chars, so put a longer venue name in the address line. The two headings are slots too: "ABOUT" and "DETAILS" or a cost and RSVP pair. The castle illustration starts just below the logistics column, so the blurb must stay at 4 lines.
+- Last used:
+
+### Blue and Red Modern Japan Matsuri Poster
+- Template: https://www.canva.com/templates/EAGxJJ1fUS4-blue-and-red-modern-japan-matsuri-poster/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TAHP4isPW0o&template=EAGxJJ1fUS4&category=tAFBBNL-eFc
+- Look: dark navy top two thirds with a red sun and a flat Mount Fuji, sakura branches and hanging red lanterns in the top corners, cream lower third with navy seigaiha cloud shapes, cream serif title, an orange band holding the date and address, a red pill button. Illustrated and festival-flavoured; the illustrated counterpart to the navy typographic seigaiha entry. 8.5 x 11.
+- Slots: handle "@reallygreatsite" (about 16 chars, small, top centre); title "Japan Matsuri" (one box, soft-wraps to 2 lines of about 7 chars, large serif); tagline "Celebrating the Spirit of Japan." (about 32 chars); date "September 10, 2025" (about 18 chars, in the orange band); address "123 Anywhere St., Any City, ST 12345" (about 36 chars, same band); blurb (one box, soft-wraps to 3 lines of about 55 chars, small serif on the cream); button "JOIN NOW" (about 8 chars, red pill); URL "www.reallygreatsite.com" (about 23 chars).
+- Watch: the title takes about 7 chars a line at template size, so "WELCOME BACK MIXER" needs a size drop or three lines. The orange band is the logistics block; time shares the date line. Cost goes in the blurb and RSVP in the pill button or URL line. The band sits directly over Fuji's summit, so a third band line pushes into the mountain.
+- Last used:
+
+### Green and Blue Illustrated Picnic Flyer
+- Template: https://www.canva.com/templates/EAHN6nBYcTo-green-and-blue-illustrated-picnic-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHN6nBYcTo&category=tAFBBALx6F8
+- Look: pale sky-blue fading to a green park scene, flat-illustrated picnic table with a grill, bottles and a basket, round green trees and lamp posts, a faint city skyline, green script title over a bold green sans subtitle, a green pill holding the date. Bright and illustrated, the only green mixer option; not Japan-themed on its own, so swap the grill for sakura or a bento from Elements for a hanami. 8.5 x 11.
+- Slots: header "Rimberio Present" (about 16 chars, small green); title "Picnic" (about 6 chars, large script); subtitle "IN THE PARK" (about 11 chars, bold caps); blurb (one box, soft-wraps to 2 lines of about 45 chars); date "28 JULY, 2026 | AT 08 AM" (about 24 chars, white caps in the green pill); address "123 Anywhere St., Any City" (about 26 chars, under the pill).
+- Watch: the header box holds its first letter as a separate text run ("R" + "imberio Present"), so Find and replace on the whole phrase may need to be done in two passes. The script title takes about 6 chars; "MIXER" or "HANAMI" fits, longer names belong in the subtitle line. Cost and RSVP go in the blurb, which can grow to a third line before it reaches the pill. The illustration starts just below the address line.
+- Last used:
+
+### Pink Green and Blue Illustrated Summer Festival Poster
+- Template: https://www.canva.com/templates/EAHNhVAgZkc-pink-green-and-blue-illustrated-summer-festival-poster/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TAHP4isPW0o&template=EAHNhVAgZkc&category=tAFBBNL-eFc
+- Look: pink and green gingham band across the top holding a pale mint title panel, mint lower half with three flat-illustrated market stalls with striped awnings along the foot, tall green condensed serif title, pink sans logistics. Pastel and illustrated, the only gingham option; the stalls read as festival booths, so it suits a matsuri-style or market mixer. Not Japan-themed on its own; a lantern string from Elements fixes that. 8.5 x 11.
+- Slots: title as two boxes "SUMMER" (about 6 chars) and "FESTIVAL" (about 8 chars, both condensed caps); date "Sunday 28 June" (about 14 chars, bold pink); time "10 am - 6 pm" (about 12 chars, bold pink, right of the date with a diamond between); address "123 Anywhere St., Any City" (about 26 chars, bold pink); blurb (one box, 2 hard lines: about 52 chars soft-wrapping to 2 lines, then "reallygreatsite.com" about 19 chars).
+- Watch: the title is split across two boxes of 6 and 8 chars; "WELCOME" / "BACK MIXER" fits at a size drop, or blank the second box for a one-word name. The date and time boxes sit side by side on one line, so a long weekday-and-date pushes into the time; keep the date to about 14 chars. Cost and RSVP go in the blurb, whose second line is the URL. The stalls start about a third of the way up, so the blurb has no room to grow past 3 lines.
+- Last used:
+
+### Blue White and Pink Illustrated Spring Festival Flyer
+- Template: https://www.canva.com/templates/EAHAWevFMZ8-blue-white-and-pink-illustrated-spring-festival-flyer/
+- Editor: https://www.canva.com/design/editor/shell?create&type=TACQ-ujqN6g&template=EAHAWevFMZ8&category=tAFBBALx6F8
+- Look: pale sky-blue with watercolour blossom branches and wildflowers framing every edge, a rust-red serif title with a script third line, small centred blurb, rust date and time pair, a rust pill button and URL. Soft and watercolour, the only pale-blue option; the blossom branches read as sakura, so it suits a hanami or any spring social. 8.5 x 11.
+- Slots: header "RIMBERIO PRESENT" (about 16 chars, small caps); title "SPRING FESTIVAL" (one box, soft-wraps to 2 lines of about 8 chars, serif caps); script "Celebration" (about 11 chars); blurb (one box, 2 hard lines of about 30 and 48 chars, small); "Sunday" (about 6 chars) over "23 April, 2026" (about 14 chars, bold); "Start From" (about 10 chars) over "08:00 am" (about 8 chars, bold), right of the date; button "For More Information" (about 20 chars, white on rust pill); URL "www.reallygreatsite.com" (about 23 chars).
+- Watch: a calendar glyph sits left of the date pair and a clock glyph left of the time pair; delete both from Layers. No address box, so the venue and street go in the blurb's second line (48 chars) or in the button, which is the natural RSVP slot. The title box takes about 8 chars a line; "WELCOME BACK" fits as two lines with "Mixer" in the script box. Flowers run up both sides, so keep every box at its template width.
 - Last used:

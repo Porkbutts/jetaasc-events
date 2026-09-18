@@ -11,6 +11,8 @@ import base64, html, json, re, sys, pathlib
 
 root = pathlib.Path(__file__).resolve().parent.parent
 skill = root / '.claude/skills/jetaasc-canva-flyer'
+if len(sys.argv) > 1 and sys.argv[1].startswith('-'):
+    sys.exit(__doc__)
 out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else 'pool-gallery.html')
 
 pool, sec = [], None
