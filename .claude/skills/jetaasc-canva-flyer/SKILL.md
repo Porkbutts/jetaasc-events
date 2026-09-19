@@ -53,6 +53,16 @@ Navigate straight to the entry's editor link. It creates a new design in
 the current tab; no template page, no grid, no "Customize this template"
 button. Update the entry's last-used date when the flyer is done.
 
+The pool goes stale: Canva retires templates and the looks get familiar.
+Two signals, both cheap to check while picking. If the pool file's "Last
+scouted" date is more than about four months old, tell the user in the
+final message that the pool is due for a `jetaasc-canva-template-scout`
+run; mention it once and carry on, it never blocks a flyer. If an editor
+link lands on an error page or an empty design instead of the template,
+the template is gone: delete that entry and its thumbnail from the pool,
+pick the next best entry, and say which one was removed. A section that
+drops below three entries is worth calling out the same way.
+
 Only if nothing in the pool suits the event, search
 `https://www.canva.com/templates/?query=<terms>` and vet the find the way
 `jetaasc-canva-template-scout` does, then add it to the pool so the next

@@ -152,6 +152,13 @@ it in the account, which is harmless.
 
 ## Recording
 
+Set the "Last scouted" date near the top of `templates.md` to today at
+the end of every run, even a small one. The flyer skill uses it to tell
+the user when the pool is due for a refresh, so a run that forgets it
+produces a false reminder. A refresh run is also the time to retire
+entries: open each existing editor link once, drop any that no longer
+resolve to the template, and drop any the user has vetoed since.
+
 Append to the right event-type section of `templates.md`, matching the
 existing entries' shape. Five entries per event type is the target, ten
 for Boba Banter and for mixers and general socials, the two that run

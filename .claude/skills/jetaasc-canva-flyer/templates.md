@@ -17,6 +17,11 @@ at the same font size. Treat a count as "fits without any adjustment".
 
 Update "Last used" when a flyer ships. Leave it blank for never.
 
+Last scouted: 2026-09-17
+
+The scout skill rewrites that date on every run. The flyer skill reads it
+and says so when the pool is more than about four months stale.
+
 ## Boba Banter (professional but warm)
 
 ### Red Green Illustrated Retro Campus Event Invitation
